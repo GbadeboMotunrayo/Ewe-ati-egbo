@@ -57,8 +57,24 @@ export interface Product {
   warnings: string;
   rating: number;
   reviewCount: number;
-  emoji: string; // stand-in for product imagery in demo
+  emoji: string; // fallback
+  image: string; // product photography (Unsplash, validated)
 }
+
+const U = (id: string, w = 600) =>
+  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`;
+
+// Shared imagery used across app + hero (botanical, validated subjects).
+export const IMAGES = {
+  herbs: U('1596040033229-a9821ebd058d'),
+  greens: U('1543362906-acfc16c67564'),
+  broccoli: U('1615485290382-441e4d049cb5'),
+  turmericTea: U('1622480916113-9000ac49b79d'),
+  smoothie: U('1610970881699-44a5587cabec'),
+  plant: U('1512428813834-c702c7702b78'),
+  produce: U('1466637574441-749b8f19452f', 900),
+  mango: U('1601493700631-2b16ec4b4716'),
+};
 
 export interface ShipmentLeg {
   status: ShipmentStatus;
@@ -143,6 +159,7 @@ export const products: Product[] = [
     rating: 4.8,
     reviewCount: 127,
     emoji: '🫘',
+    image: IMAGES.herbs,
   },
   {
     id: 'p2',
@@ -169,6 +186,7 @@ export const products: Product[] = [
     rating: 4.7,
     reviewCount: 89,
     emoji: '🌿',
+    image: IMAGES.greens,
   },
   {
     id: 'p3',
@@ -195,6 +213,7 @@ export const products: Product[] = [
     rating: 4.9,
     reviewCount: 204,
     emoji: '🍵',
+    image: IMAGES.smoothie,
   },
   {
     id: 'p4',
@@ -220,6 +239,7 @@ export const products: Product[] = [
     rating: 4.5,
     reviewCount: 61,
     emoji: '🧼',
+    image: IMAGES.plant,
   },
 ];
 

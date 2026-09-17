@@ -2,12 +2,20 @@ import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Image } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ShoppingBag } from 'lucide-react-native';
 import { colors, fonts, radius, spacing } from '@/theme/theme';
-import { categories, products, traditions } from '@/data/mockData';
+import { IMAGES, products, traditions } from '@/data/mockData';
 import { ProductCard } from '@/components/ProductCard';
 import { Pill } from '@/components/Pill';
+
+const CATEGORY_TILES = [
+  { name: 'Herbs', image: IMAGES.herbs },
+  { name: 'Teas', image: IMAGES.turmericTea },
+  { name: 'Supplements', image: IMAGES.smoothie },
+  { name: 'Beauty', image: IMAGES.plant },
+];
 import { useCart } from '@/state/cart';
 import { useAuth } from '@/state/auth';
 
@@ -48,10 +56,25 @@ export default function HomeScreen() {
         </View>
       )}
 
+      <View style={styles.pad}>
+        <View style={styles.banner}>
+          <Image source={{ uri: IMAGES.herbs }} style={StyleSheet.absoluteFill} contentFit="cover" />
+          <LinearGradient colors={['rgba(9,40,30,0.85)', 'rgba(9,40,30,0.2)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFill} />
+          <View style={styles.bannerInner}>
+            <Text style={styles.bannerTitle}>Nature's Goodness,{'\n'}Naturally</Text>
+            <Text style={styles.bannerSub}>Authentic botanicals from verified sellers</Text>
+            <View style={styles.bannerBtn}><Text style={styles.bannerBtnText}>Shop Now</Text></View>
+          </View>
+        </View>
+      </View>
+
       <Section title="Shop by category">
-        <View style={styles.chips}>
-          {categories.map((c) => (
-            <Pill key={c} label={c} tint={colors.cream} color={colors.bark} />
+        <View style={styles.tiles}>
+          {CATEGORY_TILES.map((c) => (
+            <Pressable key={c.name} style={styles.tile} onPress={() => router.push('/explore')}>
+              <Image source={{ uri: c.image }} style={styles.tileImg} contentFit="cover" />
+              <Text style={styles.tileLabel}>{c.name}</Text>
+            </Pressable>
           ))}
         </View>
       </Section>
@@ -114,4 +137,15 @@ const styles = StyleSheet.create({
   sectionTitle: { fontFamily: fonts.heading, fontSize: 17, color: colors.text, paddingHorizontal: spacing.md },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm, paddingHorizontal: spacing.md },
   rail: { gap: spacing.sm, paddingHorizontal: spacing.md },
+  pad: { paddingHorizontal: spacing.md, marginTop: spacing.md },
+  banner: { height: 150, borderRadius: radius.lg, overflow: 'hidden', justifyContent: 'center' },
+  bannerInner: { padding: spacing.md },
+  bannerTitle: { fontFamily: fonts.heading, fontSize: 22, color: colors.white, lineHeight: 26 },
+  bannerSub: { fontFamily: fonts.body, fontSize: 12, color: 'rgba(255,255,255,0.9)', marginTop: 6, maxWidth: 180 },
+  bannerBtn: { alignSelf: 'flex-start', backgroundColor: colors.white, borderRadius: radius.sm, paddingHorizontal: 16, paddingVertical: 8, marginTop: 12 },
+  bannerBtnText: { fontFamily: fonts.headingMedium, fontSize: 12, color: colors.primaryDark },
+  tiles: { flexDirection: 'row', gap: spacing.sm, paddingHorizontal: spacing.md },
+  tile: { flex: 1, alignItems: 'center' },
+  tileImg: { width: '100%', height: 62, borderRadius: radius.md, backgroundColor: colors.cream },
+  tileLabel: { fontFamily: fonts.bodyMedium, fontSize: 11, color: colors.text, marginTop: 6 },
 });

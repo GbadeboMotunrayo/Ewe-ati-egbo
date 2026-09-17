@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image } from 'expo-image';
 import { Star } from 'lucide-react-native';
 import { colors, fonts, radius, spacing, productClass as pc } from '@/theme/theme';
 import { sellerById, type Product } from '@/data/mockData';
@@ -12,9 +13,7 @@ export function ProductCard({ product, onPress }: { product: Product; onPress: (
 
   return (
     <Pressable style={styles.card} onPress={onPress}>
-      <View style={styles.thumb}>
-        <Text style={styles.emoji}>{product.emoji}</Text>
-      </View>
+      <Image source={{ uri: product.image }} style={styles.thumb} contentFit="cover" transition={200} />
       <View style={styles.body}>
         <Text style={styles.title} numberOfLines={1}>
           {product.title}
@@ -49,8 +48,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     overflow: 'hidden',
   },
-  thumb: { height: 110, backgroundColor: colors.cream, alignItems: 'center', justifyContent: 'center' },
-  emoji: { fontSize: 46 },
+  thumb: { height: 118, width: '100%', backgroundColor: colors.cream },
   body: { padding: spacing.sm + 2, gap: 2 },
   title: { fontFamily: fonts.headingMedium, fontSize: 14, color: colors.text },
   vernacular: { fontFamily: fonts.body, fontSize: 11, color: colors.textSecondary },

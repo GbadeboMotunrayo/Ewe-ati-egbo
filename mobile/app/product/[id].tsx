@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image } from 'expo-image';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowLeft, Star, Flag } from 'lucide-react-native';
@@ -33,11 +34,11 @@ export default function ProductScreen() {
   return (
     <View style={styles.screen}>
       <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
-        <View style={[styles.hero, { paddingTop: insets.top + spacing.sm }]}>
-          <Pressable style={styles.back} onPress={() => router.back()}>
+        <View style={styles.hero}>
+          <Image source={{ uri: product.image }} style={StyleSheet.absoluteFill} contentFit="cover" transition={200} />
+          <Pressable style={[styles.back, { top: insets.top + spacing.sm }]} onPress={() => router.back()}>
             <ArrowLeft size={22} color={colors.text} />
           </Pressable>
-          <Text style={styles.heroEmoji}>{product.emoji}</Text>
         </View>
 
         <View style={styles.body}>
@@ -119,9 +120,8 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.background },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   missing: { fontFamily: fonts.body, color: colors.textSecondary },
-  hero: { height: 240, backgroundColor: colors.cream, alignItems: 'center', justifyContent: 'center' },
-  back: { position: 'absolute', left: spacing.md, top: spacing.md, width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center', zIndex: 2 },
-  heroEmoji: { fontSize: 96 },
+  hero: { height: 260, backgroundColor: colors.cream },
+  back: { position: 'absolute', left: spacing.md, width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.9)', alignItems: 'center', justifyContent: 'center', zIndex: 2 },
   body: { padding: spacing.md, gap: spacing.md },
   pillRow: { flexDirection: 'row', gap: spacing.sm },
   title: { fontFamily: fonts.heading, fontSize: 22, color: colors.text },
