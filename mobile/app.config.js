@@ -34,6 +34,7 @@ module.exports = {
     ],
     experiments: {
       typedRoutes: true,
+      baseUrl: '/Ewe-ati-egbo',
     },
   },
 };
