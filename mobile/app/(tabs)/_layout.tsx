@@ -10,7 +10,7 @@ export default function TabsLayout() {
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textSecondary,
-        tabBarLabelStyle: { fontFamily: fonts.bodyMedium, fontSize: 11 },
+        tabBarLabelStyle: { fontFamily: fonts.bodyMedium, fontSize: 12 },
         tabBarStyle: { borderTopColor: colors.border, backgroundColor: colors.surface },
       }}
     >

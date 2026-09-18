@@ -13,7 +13,7 @@ export function ProductCard({ product, onPress }: { product: Product; onPress: (
 
   return (
     <Pressable style={styles.card} onPress={onPress}>
-      <Image source={{ uri: product.image }} style={styles.thumb} contentFit="cover" transition={200} />
+      <Image source={{ uri: product.image }} style={styles.thumb} contentFit="cover" transition={200} accessibilityLabel={`${product.title} — ${product.commonName}`} />
       <View style={styles.body}>
         <Text style={styles.title} numberOfLines={1}>
           {product.title}

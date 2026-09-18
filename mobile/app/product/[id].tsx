@@ -35,7 +35,7 @@ export default function ProductScreen() {
     <View style={styles.screen}>
       <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
         <View style={styles.hero}>
-          <Image source={{ uri: product.image }} style={StyleSheet.absoluteFill} contentFit="cover" transition={200} />
+          <Image source={{ uri: product.image }} style={StyleSheet.absoluteFill} contentFit="cover" transition={200} accessibilityLabel={`${product.title} — ${product.botanicalName}`} />
           <Pressable style={[styles.back, { top: insets.top + spacing.sm }]} onPress={() => router.back()}>
             <ArrowLeft size={22} color={colors.text} />
           </Pressable>

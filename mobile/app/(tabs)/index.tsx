@@ -58,8 +58,8 @@ export default function HomeScreen() {
 
       <View style={styles.pad}>
         <View style={styles.banner}>
-          <Image source={{ uri: IMAGES.herbs }} style={StyleSheet.absoluteFill} contentFit="cover" />
-          <LinearGradient colors={['rgba(9,40,30,0.85)', 'rgba(9,40,30,0.2)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFill} />
+          <Image source={{ uri: IMAGES.produce }} style={StyleSheet.absoluteFill} contentFit="cover" accessibilityLabel="Fresh botanicals" />
+          <LinearGradient colors={['rgba(9,40,30,0.92)', 'rgba(9,40,30,0.35)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFill} />
           <View style={styles.bannerInner}>
             <Text style={styles.bannerTitle}>Nature's Goodness,{'\n'}Naturally</Text>
             <Text style={styles.bannerSub}>Authentic botanicals from verified sellers</Text>
