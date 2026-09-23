@@ -8,11 +8,24 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "clean": "rimraf dist",
-    "test": "node --import tsx --test tests/*.test.ts"
+    "test": "node --import tsx --test tests/*.test.ts",
+    "prepare": "tsc"
   },
   "devDependencies": {
     "rimraf": "^5.0.10",
     "tsx": "^4.17.0",
     "typescript": "^5.5.4"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
   }
 }

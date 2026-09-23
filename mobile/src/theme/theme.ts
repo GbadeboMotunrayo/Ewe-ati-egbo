@@ -61,3 +61,34 @@ export const productClass = {
   C: { label: 'Cosmetic', color: colors.ochre, tint: colors.amberTint },
   D: { label: 'Herbal Medicine', color: colors.red, tint: colors.redTint },
 } as const;
+
+// Type scale — one place to tune the reading rhythm.
+export const type = {
+  display: { fontFamily: fonts.heading, fontSize: 28, lineHeight: 34 },
+  h1: { fontFamily: fonts.heading, fontSize: 22, lineHeight: 28 },
+  h2: { fontFamily: fonts.heading, fontSize: 18, lineHeight: 24 },
+  h3: { fontFamily: fonts.headingMedium, fontSize: 15, lineHeight: 20 },
+  body: { fontFamily: fonts.body, fontSize: 14, lineHeight: 21 },
+  small: { fontFamily: fonts.body, fontSize: 12, lineHeight: 17 },
+  label: { fontFamily: fonts.bodyMedium, fontSize: 12, lineHeight: 16 },
+} as const;
+
+// Soft, warm elevation (brown-tinted, not grey) so cards float without looking clinical.
+export const shadow = {
+  sm: { shadowColor: '#3A2A1E', shadowOpacity: 0.06, shadowRadius: 6, shadowOffset: { width: 0, height: 2 }, elevation: 1 },
+  md: { shadowColor: '#3A2A1E', shadowOpacity: 0.09, shadowRadius: 14, shadowOffset: { width: 0, height: 6 }, elevation: 3 },
+  lg: { shadowColor: '#3A2A1E', shadowOpacity: 0.14, shadowRadius: 24, shadowOffset: { width: 0, height: 12 }, elevation: 8 },
+} as const;
+
+// Motion — springs feel physical; durations stay short so the app never feels slow.
+export const motion = {
+  press: { damping: 18, stiffness: 320, mass: 0.6 },
+  pop: { damping: 10, stiffness: 260, mass: 0.7 },
+  fast: 160,
+  base: 240,
+  slow: 380,
+  stagger: 45,
+} as const;
+
+// Breakpoints (dp). Phone < 600 ≤ tablet < 1024 ≤ desktop (web).
+export const breakpoints = { tablet: 600, desktop: 1024, wide: 1400 } as const;

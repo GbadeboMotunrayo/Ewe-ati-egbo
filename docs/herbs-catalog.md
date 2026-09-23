@@ -47,11 +47,11 @@ exhaustive** — a starting ~50, structured to extend by tradition and language.
 | Yanrin | Wild lettuce | African wild lettuce | *Launaea taraxacifolia* | Leaf | Salad green; general wellbeing | 🟢 |
 | Arokeke | Utazi | Utazi | *Gongronema latifolium* | Leaf | Bitter garnish; bitters | 🟢 |
 | Iyere (ewe) | Uziza leaf | W. African pepper leaf | *Piper guineense* | Leaf | Peppery soup leaf | 🟢 |
-| Ebolo | — | Ebolo | *Crassocephalum crepidioides* | Leaf | Traditional vegetable | 🟢 |
+| Ebolo | — | Ebolo | *Crassocephalum crepidioides* | Leaf | Traditional vegetable | 🟠 PA alkaloids — pending adviser |
 | Ewe igbale | Zogale, Moringa | Moringa | *Moringa oleifera* | Leaf & seed | Nutrient-dense supplement powder/tea | 🟢 |
 | Odundun | Abamoda, Never-die | Air/Miracle plant | *Bryophyllum pinnatum* | Leaf | Applied to wounds/burns; "cooling" leaf | 🟠 |
 | Akoko | Ogirisi | Boundary tree | *Newbouldia laevis* | Leaf | Ceremonial; fertility/titling rites | 🟠 |
-| Rere | Abo rere | Coffee senna | *Senna occidentalis* | Leaf/seed | Bitter decoction leaf | 🟠 |
+| Rere | Abo rere | Coffee senna | *Senna occidentalis* | Leaf/seed | Bitter decoction leaf | 🔴 toxic seed — pending adviser |
 
 ## 2 · Spices, seeds & pods
 
@@ -87,7 +87,7 @@ exhaustive** — a starting ~50, structured to extend by tradition and language.
 | Yoruba | Other names | English | Botanical | Part | Traditional use | Flag |
 |---|---|---|---|---|---|---|
 | Orogbo | Aku ilu | Bitter kola | *Garcinia kola* | Seed | Chewed seed; ceremonial | 🟢 |
-| Obi | Oji | Kola nut | *Cola acuminata* | Seed | Stimulant; hospitality/ceremony | 🟢 |
+| Obi | Oji | Kola nut | *Cola acuminata* | Seed | Stimulant; hospitality/ceremony | 🟠 caffeine labelling — pending adviser |
 | Agbalumo | Udara | African star apple | *Chrysophyllum albidum* | Fruit | Seasonal fruit | 🟢 |
 | Ejinrin | Bitter melon | Balsam pear | *Momordica charantia* | Leaf/fruit | Bitter fruit in bitters | 🟠 |
 | Ibepe | Gwanda, Pawpaw | Papaya | *Carica papaya* | Leaf & seed | Leaf infusions; fruit eaten | 🟠 |

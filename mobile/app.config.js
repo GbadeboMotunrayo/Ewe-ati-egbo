@@ -16,6 +16,8 @@ module.exports = {
         backgroundColor: '#1F6B3B',
       },
       predictiveBackGestureEnabled: false,
+      // Keep the (encrypted) session out of device/cloud backups.
+      allowBackup: false,
     },
     // 'single' (client-only SPA): the Supabase client touches browser-only
     // AsyncStorage at module load, which breaks static prerendering.
@@ -24,6 +26,7 @@ module.exports = {
     },
     plugins: [
       'expo-router',
+      'expo-secure-store',
       [
         'expo-splash-screen',
         {
