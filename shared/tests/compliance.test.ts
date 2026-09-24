@@ -161,3 +161,19 @@ test('scanning is fast on large input (no ReDoS)', () => {
   scanClaims(big);
   assert.ok(Date.now() - t < 2000, `took ${Date.now() - t}ms`);
 });
+
+// Condition terms surfaced by researching how real agbo products are named
+// (tewetegbo.com/agbo-yoruba-herbal-mixture-formula) — sellers write these exact
+// Yoruba formula/condition names, not just English medical jargon.
+test('English conditions missing before this pass are now caught', () => {
+  assert.equal(scanClaims('Agbo for prostate enlargement').ok, false);
+  assert.equal(scanClaims('Clears tonsillitis fast').ok, false);
+  assert.equal(scanClaims('Stops convulsion in children').ok, false);
+  assert.equal(scanClaims('Treats hives and skin rash').ok, false);
+});
+
+test('Yoruba agbo-formula condition names are caught, not just English translations', () => {
+  assert.equal(scanClaims('Agbo Giri for children').ok, false); // convulsion
+  assert.equal(scanClaims('Ogun Jedojedo, drink daily').ok, false); // hepatitis
+  assert.equal(scanClaims('Agbo eje riru, cools the body').ok, false); // high blood pressure
+});

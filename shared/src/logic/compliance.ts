@@ -27,10 +27,11 @@ const CONDITIONS = [
   'std', 'stds', 'sti', 'stis', 'hiv', 'hiv aids', 'covid', 'coronavirus', 'asthma', 'epilepsy', 'stroke', 'insomnia',
   'depression', 'jaundice', 'pneumonia', 'tuberculosis', 'cholera', 'dysentery', 'sickle', 'kidney stones',
   'high blood pressure', 'blood pressure', 'blood sugar', 'high bp', 'weak erection', 'erectile', 'low sperm count',
-  'sperm count', 'menstrual pain', 'period pain', 'eczema', 'psoriasis',
+  'sperm count', 'menstrual pain', 'period pain', 'eczema', 'psoriasis', 'prostate', 'tonsillitis', 'tonsilitis',
+  'convulsion', 'convulsions', 'hives',
   // Yoruba / Pidgin / Igbo vernacular for conditions & treatment
   'iba', 'jedi', 'jedi jedi', 'aisan', 'arun', 'atosi', 'ako iba', 'belle wahala', 'good for sugar', 'sugar patient', 'sugar patients',
-  'ogwu', 'ogwu iba', 'o n wo', 'wo iba', 'wo arun', 'na medicine',
+  'ogwu', 'ogwu iba', 'o n wo', 'wo iba', 'wo arun', 'na medicine', 'giri', 'jedojedo', 'jedo jedo', 'eje riru',
 ];
 
 /** Misspelling targets: conditions long enough for fuzzy (edit distance 1) matching. */

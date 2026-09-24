@@ -13,13 +13,15 @@ which the backend seeds into Postgres and the app searches.
 > that. Each row carries a **flag**: 🟢 green = generally listable · 🟠 amber = needs
 > review/docs · 🔴 red = blocked (toxic or medicine-only).
 
-Sources: DiscoverYoruba, tewetegbo.com, botanicaonline, Guardian NG / Nigerian
-Medicine list, plus 5 entries cross-checked out of the community compilation
+Sources: DiscoverYoruba, tewetegbo.com (including its detailed
+["agbo formula" breakdown](https://tewetegbo.com/agbo-yoruba-herbal-mixture-formula/),
+§8), botanicaonline, Guardian NG / Nigerian Medicine list, plus 5 entries
+cross-checked out of the community compilation
 ["Yoruba Medicinal Leaves and Names"](https://www.scribd.com/document/506090256/Lists-of-Yoruba-Medicinal-Leaves-and-Herbs)
 (§9 below — that source is ~200+ names across 8 mostly-paywalled pages and is
 **not itself verified**; only the 5 rows we cross-checked were added). Curated +
 cross-checked against documented botanical names. **Not exhaustive** — a starting
-~55, structured to extend by tradition and language.
+54, structured to extend by tradition and language.
 
 ## Categories
 
@@ -120,12 +122,75 @@ cross-checked against documented botanical names. **Not exhaustive** — a start
 
 These are **prepared medicinal decoctions**. Marketed to treat disease, they are
 **medicines under UK law (MHRA)** and are **blocked** on the platform unless the seller
-holds a THR/MA. Documented here so the compliance engine recognises and rejects them.
+holds a THR/MA. Documented here — properly, not as an afterthought — so the
+compliance engine recognises them by name, not just by keyword.
+
+### How a formula is actually built
+
+Source:
+["Agbo: Yoruba Herbal Mixture Formula"](https://tewetegbo.com/agbo-yoruba-herbal-mixture-formula/).
+Agbo isn't a random handful of leaves in water — it's assembled from herbs playing
+**defined functional roles**, each contributing something specific to the mixture:
+
+| Yoruba role | Function | Example herb |
+|---|---|---|
+| Iran Ewé Àti Egbò Àárín | Centre / coordinating herb | Ìpẹ̀ta (*Securidaca longipedunculata*) |
+| Iran Ajẹ́ẹ̀gùn | Catalyst — activates the mixture | Ẹtù Àpáta |
+| Iran Ewé Ara | "Miraculous" herbs | Abamoda, Ewe Alupaida |
+| Iran Tawàrà | Penetrating (sharp/hot) herbs | Atare, Iyere |
+| Iran Aporó/Ẹ̀rọ̀ | Symptom silencers | Palm kernel oil |
+| Iran Olójú Éjì | Stabilising/normalising herbs | Ewuro (bitter leaf) |
+| Iran Afọ Ìdọ̀tí Ara | Flushing (waste removal) | Bàrà Ẹ̀gúsí |
+| Iran Àjẹsára | Immunity/strength boosters | Epo Ogano (mahogany bark) |
+| Èròjà Ògùn | Supporting ingredients | Kanafuru (cloves), Atare, Iyere |
+| Agbè Ògùn Rìn | Carriers/vehicles | Water, fermented corn water (omi ogi), shea butter |
+
+A worked example the source gives for a blood-pressure formula: boil the centre herb
+(Ipeta) as the base → squeeze in a stabilising herb (bitter leaf) → add a penetrating
+ingredient (alligator pepper, optional) → the Ipeta liquid itself serves as the
+carrier. Nothing in the mixture is arbitrary — which is exactly why a formula's
+**name** (not just its ingredient list) is enough to identify a medicinal claim.
+
+### Formulas by condition (why the claims engine watches for these names)
+
+The source lists dozens of named agbo/ogun formulas, organised by what they're sold
+to treat — this is the real-world vocabulary sellers use, in Yoruba, that a
+keyword scanner limited to English medical terms would miss entirely:
+
+| Category | Named formulas |
+|---|---|
+| Fever | Agbo Iba (malaria), Agbo Iba Ponto (typhoid) |
+| Blood/pressure | Agbo BP, Agbo Eje Riru, Agbo Iletutu |
+| Digestive | Agbo Jedi Jedi (haemorrhoids), Agbo Ogbe Inu (ulcers), Ogun Esuke (hiccups) |
+| Neurological | Agbo Giri (convulsion), Ogun Isoye (memory) |
+| Pain | Agbo Ara Riro (body pain), Agbo Opa Eyin (back pain), Ogun Awoka (arthritis) |
+| Respiratory | Ogun Iko (cough), Ogun Belubelu (tonsillitis) |
+| Reproductive | Agbo Eda, Agbo Atosi (STIs), Agbo Ale, Ogun Fibroid, Ogun Prostate |
+| Metabolic | Agbo weight loss, Agbo Ito Sugar (diabetes) |
+| Skin | Agbo Inarun (hives), Agbo Ela (cradle cap) |
+| Organ | Ogun Jedojedo (hepatitis), Ogun Kidney Problem |
+
+`shared/src/logic/compliance.ts`'s `CONDITIONS` list now includes the Yoruba terms
+this surfaced (`giri`, `jedojedo`, `eje riru`) alongside the English conditions it
+was missing (`prostate`, `tonsillitis`, `convulsion`, `hives`) — see
+`shared/tests/compliance.test.ts` for the tests that lock this in.
 
 | Yoruba | English | Typical botanicals | Flag |
 |---|---|---|---|
 | Agbo iba | Fever/malaria decoction | *Morinda lucida*, neem, lemongrass | 🔴 |
 | Agbo jedi-jedi | "Internal heat"/haemorrhoid decoction | Multi-herb | 🔴 |
+
+### Formula-role herbs added to the dictionary
+
+Three herbs named above as functional roles, cross-checked and added individually
+(the rest — Ẹtù Àpáta, Ewe Alupaida, Bàrà Ẹ̀gúsí — weren't confidently identifiable
+to a specific species from the source alone, so were left out rather than guessed):
+
+| Yoruba | English | Botanical | Role in formula | Flag |
+|---|---|---|---|---|
+| Ipeta | Violet tree | *Securidaca longipedunculata* | Centre/coordinating herb | 🔴 root/bark toxicity documented — not listable |
+| Oganwo / Ogano | African mahogany | *Khaya senegalensis* | Immunity-booster bark | 🟠 fever/malaria associations — review |
+| Kanafuru | Cloves | *Syzygium aromaticum* | Supporting ingredient | 🟢 ordinary culinary spice |
 
 ## 9 · Candidate additions (from an unverified community source)
 
