@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { AppState, Platform } from 'react-native';
 import type { Session } from '@supabase/supabase-js';
 import { isSupabaseConfigured, supabase } from '@/lib/supabaseClient';
 
 interface AuthState {
   session: Session | null;
   loading: boolean;
-  /** Demo mode = Supabase isn't configured; screens show mock data and a fake signed-in user. */
+  /** Demo mode = Supabase isn't configured; screens show mock data. */
   demoMode: boolean;
   signOut: () => Promise<void>;
 }
@@ -14,19 +15,35 @@ const AuthContext = createContext<AuthState | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(isSupabaseConfigured);
 
   useEffect(() => {
-    if (!isSupabaseConfigured) {
-      setLoading(false);
-      return;
-    }
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
+    if (!isSupabaseConfigured) return;
+
+    // Single source of truth: supabase-js v2 emits INITIAL_SESSION first, then every
+    // change in order — so an older getSession() result can never overwrite a newer one.
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, next) => {
+      setSession(next);
       setLoading(false);
     });
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, next) => setSession(next));
-    return () => sub.subscription.unsubscribe();
+
+    // Safety net: never spin forever if storage/network fails.
+    const timeout = setTimeout(() => setLoading(false), 8000);
+
+    // Refresh tokens only while the app is in the foreground (Supabase RN guidance).
+    const appState =
+      Platform.OS === 'web'
+        ? null
+        : AppState.addEventListener('change', (s) => {
+            if (s === 'active') void supabase.auth.startAutoRefresh();
+            else void supabase.auth.stopAutoRefresh();
+          });
+
+    return () => {
+      clearTimeout(timeout);
+      sub.subscription.unsubscribe();
+      appState?.remove();
+    };
   }, []);
 
   const value = useMemo<AuthState>(
@@ -35,8 +52,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       loading,
       demoMode: !isSupabaseConfigured,
       signOut: async () => {
-        if (isSupabaseConfigured) await supabase.auth.signOut();
-        setSession(null);
+        try {
+          if (isSupabaseConfigured) await supabase.auth.signOut();
+        } finally {
+          setSession(null);
+        }
       },
     }),
     [session, loading]

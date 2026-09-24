@@ -5,24 +5,16 @@ import { colors, fonts } from '@/theme/theme';
 import type { VerificationStatus } from '@/data/mockData';
 
 // Only render a badge for a check that was actually performed (docs brand §Trust marks).
-export function VerificationBadge({ status }: { status: VerificationStatus }) {
-  if (status === 'trusted') {
-    return (
-      <View style={styles.row}>
-        <ShieldCheck size={14} color={colors.primary} />
-        <Text style={styles.text}>Trusted Seller</Text>
-      </View>
-    );
-  }
-  if (status === 'verified') {
-    return (
-      <View style={styles.row}>
-        <BadgeCheck size={14} color={colors.primary} />
-        <Text style={styles.text}>Verified Seller</Text>
-      </View>
-    );
-  }
-  return null;
+export function VerificationBadge({ status, compact }: { status: VerificationStatus; compact?: boolean }) {
+  if (status !== 'trusted' && status !== 'verified') return null;
+  const Icon = status === 'trusted' ? ShieldCheck : BadgeCheck;
+  const label = status === 'trusted' ? 'Trusted Seller' : 'Verified Seller';
+  return (
+    <View style={styles.row} accessible accessibilityLabel={label}>
+      <Icon size={14} color={colors.primary} />
+      {!compact && <Text style={styles.text}>{label}</Text>}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

@@ -14,8 +14,8 @@ create table if not exists botanicals (
   part          text,
   category      text not null,
   traditional_use text,          -- ethnobotanical reference only; never a sales claim
-  platform_class char(1) not null,
-  regulatory_flag text not null, -- green | amber | red
+  platform_class char(1) not null check (platform_class in ('A','B','C','D')),
+  regulatory_flag text not null check (regulatory_flag in ('green','amber','red')),
   note          text
 );
 
@@ -23,10 +23,10 @@ create table if not exists botanicals (
 create index if not exists botanicals_search_trgm
   on botanicals using gin ((coalesce(yoruba,'') || ' ' || coalesce(english,'') || ' ' || coalesce(botanical,'')) gin_trgm_ops);
 
--- The traffic-light engine reads this; seeded from the dictionary's flags.
+-- The traffic-light engine reads this; rebuilt from the dictionary's flags on every seed.
 create table if not exists restricted_ingredients (
   id            text primary key,
-  botanical_id  text references botanicals(id),
-  status        text not null, -- green | amber | red
+  botanical_id  text not null references botanicals(id) on delete cascade,
+  status        text not null check (status in ('amber','red')),
   note          text
 );

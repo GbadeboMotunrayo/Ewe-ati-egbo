@@ -7,10 +7,21 @@ dist/
 web-build/
 *.tsbuildinfo
 
-# env / secrets
+# env / secrets — every .env variant except the committed examples
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
+*.pem
+*.key
+*.p8
+*.p12
+*.jks
+*.keystore
+*.mobileprovision
+google-services.json
+GoogleService-Info.plist
+credentials.json
+service-account*.json
 
 # logs
 *.log

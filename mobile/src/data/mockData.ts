@@ -248,7 +248,7 @@ export const orders: Order[] = [
     id: 'o1',
     ref: 'EAE-10041',
     placedAt: '2026-09-12',
-    totalPence: 2499,
+    totalPence: 2199, // 999 product + 1200 Lagos→London corridor (matches cart pricing)
     productTitle: 'Bitter Leaf (Dried)',
     sellerName: 'Adom Botanicals',
     corridorLabel: 'Lagos → London',
@@ -265,7 +265,7 @@ export const orders: Order[] = [
     id: 'o2',
     ref: 'EAE-10038',
     placedAt: '2026-09-05',
-    totalPence: 699,
+    totalPence: 1098, // 699 product + 399 UK direct delivery
     productTitle: 'Raw African Black Soap',
     sellerName: 'Roots & Wellness',
     corridorLabel: 'UK direct',
@@ -289,10 +289,45 @@ export function productById(id: string): Product | undefined {
 }
 
 /** Multilingual search: matches title, common, botanical or any vernacular name. */
-export function searchProducts(query: string): Product[] {
-  const q = query.trim().toLowerCase();
-  if (!q) return products;
-  return products.filter((p) =>
-    [p.title, p.commonName, p.botanicalName, ...p.vernacular].some((n) => n.toLowerCase().includes(q))
-  );
+/** Accent/tone-insensitive text fold, so "ewúro" finds "Ewuro". */
+function fold(s: string): string {
+  return s.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
+}
+
+export interface ProductFilter {
+  query?: string;
+  category?: string;
+  tradition?: string;
+}
+
+export function searchProducts(queryOrFilter: string | ProductFilter): Product[] {
+  const f: ProductFilter = typeof queryOrFilter === 'string' ? { query: queryOrFilter } : queryOrFilter;
+  const q = fold((f.query ?? '').trim());
+  return products.filter((p) => {
+    if (f.category && p.category !== f.category) return false;
+    if (f.tradition && p.tradition !== f.tradition) return false;
+    if (!q) return true;
+    return [p.title, p.commonName, p.botanicalName, ...p.vernacular].some((n) => fold(n).includes(q));
+  });
+}
+
+// Delivery pricing ------------------------------------------------------------
+export const UK_DIRECT = { label: 'UK direct (Evri/Royal Mail)', pricePence: 399, window: '2–4 days' } as const;
+
+export interface DeliveryQuoteInfo {
+  direct: boolean;
+  label: string;
+  window: string;
+  pricePence: number;
+  corridorId?: string;
+}
+
+/** A priced delivery option for a product — or undefined when it can't be delivered (never £0). */
+export function quoteDelivery(product: Product): DeliveryQuoteInfo | undefined {
+  if (product.fulfilment === 'uk_direct') {
+    return { direct: true, label: UK_DIRECT.label, window: UK_DIRECT.window, pricePence: UK_DIRECT.pricePence };
+  }
+  const c = corridorById(product.corridorId);
+  if (!c) return undefined;
+  return { direct: false, label: c.label, window: `${c.transitMinDays}–${c.transitMaxDays} days`, pricePence: c.pricePence, corridorId: c.id };
 }
