@@ -1,4 +1,12 @@
 // app.config.js (not app.json) so env vars are available at config-eval time.
+//
+// baseUrl is where the web build is served from:
+//   unset            -> '/Ewe-ati-egbo'  (GitHub Pages project site)
+//   EXPO_PUBLIC_BASE_URL=''  -> root      (Vercel / custom domain — set in vercel.json)
+//   EXPO_PUBLIC_BASE_URL='/x'-> '/x'
+const rawBase = process.env.EXPO_PUBLIC_BASE_URL;
+const baseUrl = rawBase === undefined ? '/Ewe-ati-egbo' : rawBase;
+
 module.exports = {
   expo: {
     name: 'Ewe ati Egbo',
@@ -37,7 +45,8 @@ module.exports = {
     ],
     experiments: {
       typedRoutes: true,
-      baseUrl: '/Ewe-ati-egbo',
+      // Omit entirely when base is '' so the app serves from the domain root.
+      ...(baseUrl ? { baseUrl } : {}),
     },
   },
 };

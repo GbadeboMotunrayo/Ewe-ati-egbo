@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "npm install",
+  "buildCommand": "npm run shared:build && cd mobile && npm install && EXPO_PUBLIC_BASE_URL='' npx expo export -p web",
+  "outputDirectory": "mobile/dist",
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/((?!_expo/|assets/|favicon).*)", "destination": "/index.html" }
+  ]
+}
