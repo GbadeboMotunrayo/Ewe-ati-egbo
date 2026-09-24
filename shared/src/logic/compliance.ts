@@ -29,6 +29,8 @@ const CONDITIONS = [
   'high blood pressure', 'blood pressure', 'blood sugar', 'high bp', 'weak erection', 'erectile', 'low sperm count',
   'sperm count', 'menstrual pain', 'period pain', 'eczema', 'psoriasis', 'prostate', 'tonsillitis', 'tonsilitis',
   'convulsion', 'convulsions', 'hives',
+  // Sexual-function claims — one of the most heavily-enforced UK ad/medicine categories.
+  'sex drive', 'low libido', 'premature ejaculation', 'weak manhood', 'weak in bed',
   // Yoruba / Pidgin / Igbo vernacular for conditions & treatment
   'iba', 'jedi', 'jedi jedi', 'aisan', 'arun', 'atosi', 'ako iba', 'belle wahala', 'good for sugar', 'sugar patient', 'sugar patients',
   'ogwu', 'ogwu iba', 'o n wo', 'wo iba', 'wo arun', 'na medicine', 'giri', 'jedojedo', 'jedo jedo', 'eje riru',
@@ -47,8 +49,11 @@ const STRONG_CLAIM_PATTERNS: RegExp[] = [
   /\bgets? rid of\b/,
   /\b(fights?|kills?|destroys?|eliminates?|flush(es)? out|wipes? out) (germs?|bacteria|virus(es)?|infections?|parasites?|worms?|toxins?|disease|sickness|illness)\b/,
   /\bflush(es|ing)? (out )?toxins?\b/,
-  /\bboost(s|ing|er)? (your )?(fertility|immunity|immune system|libido|sperm|manpower|drive)\b/,
+  /\bboost(s|ing|er)? (your )?(fertility|immunity|immune system|libido|sperm|manpower|drive|sex drive|stamina)\b/,
   /\bfertility (booster|boost|enhancer)\b/,
+  /\b(last|lasts|lasting|stay|stays|staying) (longer|harder|hard)\b(?: in bed)?/,
+  /\b(longer|harder) (lasting |sex\b)/,
+  /\bimprove(s|d)? (your )?(sex drive|sex life|sexual performance|sexual stamina)\b/,
   /\b(lower|lowers|lowering|reduce|reduces|reducing|control|controls|regulate|regulates|balance|balances) (your )?(blood sugar|sugar level|sugar levels|blood pressure|bp|cholesterol)\b/,
   /\banti ?(malarial|bacterial|biotic|biotics|viral|fungal|inflammatory|cancer|diabetic|hypertensive|septic|oxidant)s?\b/,
   /\b(antimalarial|antibacterial|antibiotic|antiviral|antifungal|antidiabetic|antiseptic)s?\b/,

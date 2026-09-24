@@ -177,3 +177,10 @@ test('Yoruba agbo-formula condition names are caught, not just English translati
   assert.equal(scanClaims('Ogun Jedojedo, drink daily').ok, false); // hepatitis
   assert.equal(scanClaims('Agbo eje riru, cools the body').ok, false); // high blood pressure
 });
+
+test('sexual-function claims are blocked — one of the most heavily-enforced UK ad categories', () => {
+  assert.equal(scanClaims('Improves sex drive and boosts stamina').ok, false);
+  assert.equal(scanClaims('Helps you last longer in bed').ok, false);
+  assert.equal(scanClaims('Makes both parties have longer sex').ok, false); // the exact phrasing this was built for
+  assert.equal(scanClaims('Traditional root used in East African ethnobotanical practice, associated with vitality.').ok, true); // honest, non-claim copy still passes
+});

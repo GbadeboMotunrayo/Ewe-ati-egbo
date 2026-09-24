@@ -90,6 +90,24 @@ export const HERBS: Herb[] = [
   { id: 'oganwo', yoruba: 'Oganwo / Ogano', otherNames: ['African mahogany'], english: 'African mahogany', botanical: 'Khaya senegalensis', part: 'Bark', category: 'barks_stems', traditionalUse: 'Bitter bark used traditionally in fever/malaria decoctions and as an immune "booster" herb.', platformClass: 'D', regulatoryFlag: 'amber', note: 'Fever/malaria decoction associations — review; no disease claims permitted.' },
   { id: 'kanafuru', yoruba: 'Kanafuru', otherNames: ['Cloves'], english: 'Cloves', botanical: 'Syzygium aromaticum', part: 'Dried flower bud', category: 'spices_seeds', traditionalUse: 'Aromatic spice; used as a supporting ingredient in traditional formulas.', platformClass: 'A', regulatoryFlag: 'green' },
 
+  // ── Vitality / stamina botanicals — high commercial demand, high compliance risk.
+  // Sold on UK shelves (Holland & Barrett stocks several of these) as plain food
+  // supplements with NO sexual-function claims on the label — that's the compliant
+  // model. `traditionalUse` here deliberately avoids "boosts/improves/longer" wording
+  // (see shared/logic/compliance.ts's sexual-function claim patterns) — a seller's own
+  // listing copy must too.
+  //
+  // Only "werepe" (mucuna) has a Yoruba name we're actually confident about. The other
+  // four are not part of Yoruba ethnobotanical tradition (Ugandan, global-supplement,
+  // Brazilian and Cameroonian in origin respectively) — the `yoruba` field is honestly
+  // set to the common trade name rather than a guessed-at Yoruba word we don't have,
+  // per the same accuracy standard as the rest of this file (see §9's afomo correction).
+  { id: 'mulondo', yoruba: 'Mulondo (no Yoruba name — Ugandan/Luganda)', otherNames: ['White ginger'], english: 'Mondia root', botanical: 'Mondia whitei', part: 'Root', category: 'roots_rhizomes', traditionalUse: 'East African root, traditionally associated with vitality; also used as a food flavouring.', platformClass: 'B', regulatoryFlag: 'amber', note: 'Strongly associated with sexual-function marketing — listing copy must avoid functional/performance claims.' },
+  { id: 'tribulus', yoruba: 'Tribulus (no established Yoruba name)', otherNames: ['Puncture vine'], english: 'Tribulus', botanical: 'Tribulus terrestris', part: 'Fruit/seed', category: 'spices_seeds', traditionalUse: 'Widely sold in the UK as an ordinary food supplement ingredient.', platformClass: 'B', regulatoryFlag: 'amber', note: 'Common "testosterone support" marketing — listing copy must avoid functional/performance claims.' },
+  { id: 'muira-puama', yoruba: 'Muira puama (no Yoruba name — Brazilian)', otherNames: ['Potency wood'], english: 'Muira puama', botanical: 'Ptychopetalum olacoides', part: 'Root/bark', category: 'roots_rhizomes', traditionalUse: 'Brazilian root/bark, traditionally used in vitality tonics.', platformClass: 'B', regulatoryFlag: 'amber', note: 'Strongly associated with sexual-function marketing — listing copy must avoid functional/performance claims.' },
+  { id: 'yohimbe', yoruba: 'Yohimbe (no Yoruba name — Cameroonian/Duala)', otherNames: [], english: 'Yohimbe bark', botanical: 'Pausinystalia yohimbe', part: 'Bark', category: 'barks_stems', traditionalUse: 'West/Central African bark; the source of yohimbine.', platformClass: 'D', regulatoryFlag: 'red', note: 'Documented cardiovascular/blood-pressure and anxiety adverse effects — not listable as an ingestible product pending adviser review.' },
+  { id: 'mucuna', yoruba: 'Werepe', otherNames: ['Velvet bean'], english: 'Velvet bean', botanical: 'Mucuna pruriens', part: 'Seed', category: 'spices_seeds', traditionalUse: 'Seed containing L-DOPA, a pharmacologically active compound; sold as a mainstream supplement ingredient.', platformClass: 'B', regulatoryFlag: 'amber', note: 'Pharmacologically active (L-DOPA) — genuine drug-interaction risk, not just a marketing-claim issue; review before listing.' },
+
   // ── Restricted / toxic — hard blocks ──────────────────────────────────────
   { id: 'lapalapa', yoruba: 'Lapalapa', otherNames: ['Botije', 'Physic nut'], english: 'Physic nut', botanical: 'Jatropha curcas', part: 'Leaf/seed/latex', category: 'barks_stems', traditionalUse: 'Latex/leaf used traditionally on skin; seeds are toxic.', platformClass: 'D', regulatoryFlag: 'red', note: 'Seeds/oil toxic if ingested — not listable as an ingestible product.' },
   { id: 'oju-ologbo', yoruba: 'Oju ologbo', otherNames: ['Were were', 'Jequirity'], english: "Crab's eye / Jequirity", botanical: 'Abrus precatorius', part: 'Seed', category: 'spices_seeds', traditionalUse: 'Seeds used traditionally; highly toxic.', platformClass: 'D', regulatoryFlag: 'red', note: 'Seeds contain abrin — poisonous. Blocked.' },

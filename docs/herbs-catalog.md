@@ -19,9 +19,10 @@ Sources: DiscoverYoruba, tewetegbo.com (including its detailed
 cross-checked out of the community compilation
 ["Yoruba Medicinal Leaves and Names"](https://www.scribd.com/document/506090256/Lists-of-Yoruba-Medicinal-Leaves-and-Herbs)
 (§9 below — that source is ~200+ names across 8 mostly-paywalled pages and is
-**not itself verified**; only the 5 rows we cross-checked were added). Curated +
-cross-checked against documented botanical names. **Not exhaustive** — a starting
-54, structured to extend by tradition and language.
+**not itself verified**; only the 5 rows we cross-checked were added), plus 5
+mainstream vitality/stamina botanicals (§10) cross-checked against general
+botanical knowledge. Curated + cross-checked against documented botanical names.
+**Not exhaustive** — a starting 59, structured to extend by tradition and language.
 
 ## Categories
 
@@ -36,6 +37,7 @@ cross-checked against documented botanical names. **Not exhaustive** — a start
 | 7 | Topical & cosmetic botanicals | Black soap, shea, henna, camwood, aloe |
 | 8 | Traditional formulas (agbo) | Prepared medicinal decoctions — reference only |
 | 9 | Candidate additions (unverified source) | Cross-checked picks from a community list — see note above |
+| 10 | Vitality / stamina botanicals | High demand, high compliance risk — see note below |
 
 ---
 
@@ -211,6 +213,34 @@ source of truth on its own.
 | Afon | Chinaberry / Persian lilac | *Melia azedarach* | Leaf/fruit | **Fruit/seeds toxic if ingested** | 🔴 |
 | Afomo | African mistletoe | *Tapinanthus bangwensis* | Leaf/stem | BP/diabetes folk claims; varies by host tree — review | 🟠 |
 | Abura | Abura | *Mitragyna stipulosa* | Bark | Same genus as kratom (different species) — review | 🟠 |
+
+## 10 · Vitality / stamina botanicals
+
+Real, high commercial demand — and one of the most heavily enforced advertising
+categories in the UK. A product marketed to enhance sexual performance is treated
+as an unlicensed medicine; MHRA and the ASA actively police "improves sex drive,"
+"longer-lasting," "boosts libido" wording specifically. **The compliant model
+already exists on UK shelves**: Holland & Barrett and others sell Tribulus,
+Maca and similar ingredients as plain food supplements, with no functional claim
+on the label. That's the only way this category is listable here.
+
+Only one of these five has a genuine Yoruba name we're confident about (*werepe*
+for velvet bean) — the others are Ugandan, Brazilian, Cameroonian or
+global-supplement in origin and are named honestly rather than guessed at, per
+the same standard as the *afomo* correction in §9.
+
+| Common name | Botanical | Part | Note | Flag |
+|---|---|---|---|---|
+| Mulondo (Mondia root) | *Mondia whitei* | Root | East African; also a food flavouring | 🟠 |
+| Tribulus | *Tribulus terrestris* | Fruit/seed | Already sold in UK as an ordinary supplement | 🟠 |
+| Muira puama | *Ptychopetalum olacoides* | Root/bark | Brazilian vitality tonic ingredient | 🟠 |
+| Yohimbe | *Pausinystalia yohimbe* | Bark | **Documented cardiovascular/anxiety risk** | 🔴 |
+| Werepe (velvet bean) | *Mucuna pruriens* | Seed | Contains L-DOPA — genuine drug-interaction risk | 🟠 |
+
+The claims engine ([`shared/src/logic/compliance.ts`](../shared/src/logic/compliance.ts))
+now also catches "sex drive," "last longer in bed," "improves sexual performance"
+and similar phrasing directly — see `shared/tests/compliance.test.ts` for the test
+that locks this in, including the exact wording this section was built to stress-test.
 
 ---
 
