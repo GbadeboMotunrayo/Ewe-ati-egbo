@@ -4,7 +4,5 @@
   "buildCommand": "npm run shared:build && cd mobile && npm install && EXPO_PUBLIC_BASE_URL='' EXPO_PUBLIC_DEMO=1 npx expo export -p web",
   "outputDirectory": "mobile/dist",
   "cleanUrls": true,
-  "rewrites": [
-    { "source": "/((?!_expo/|assets/|favicon).*)", "destination": "/index.html" }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
