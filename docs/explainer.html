@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Ewe ati Egbo — Explainer</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 0; }
+  :root{
+    --forest:#0E3B2C; --green:#1F7A47; --green-d:#155C34; --leaf:#57B368;
+    --cream:#F6F3EC; --ink:#182A20; --muted:#5C6B60; --line:#E6DECF;
+    --gold:#C6862B; --verify:#1F9D57;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  html,body{font-family:'Inter',system-ui,Arial,sans-serif;color:var(--ink);font-size:11pt;line-height:1.55}
+  h1,h2,h3,.disp{font-family:'Sora','Inter',sans-serif}
+  .page{width:210mm;min-height:297mm;padding:20mm 18mm;page-break-after:always;position:relative;background:#fff}
+  .page:last-child{page-break-after:auto}
+  p{margin:0 0 9pt}
+  .lead{font-size:12.5pt;color:#33443a}
+  .kicker{font-family:'Sora';font-weight:700;letter-spacing:.18em;font-size:8.5pt;text-transform:uppercase;color:var(--green)}
+  h2{font-size:21pt;font-weight:800;letter-spacing:-.01em;margin:6pt 0 10pt;color:var(--forest)}
+  h3{font-size:12.5pt;font-weight:700;margin:14pt 0 5pt;color:var(--green-d)}
+  .hook{background:var(--cream);border-left:4px solid var(--leaf);padding:11pt 14pt;border-radius:6pt;margin:12pt 0;font-family:'Sora';font-weight:600;color:#1c3a2b;font-size:11.5pt}
+  ul{margin:0 0 9pt 0;padding-left:16pt}
+  li{margin:0 0 5pt}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12pt;margin:10pt 0}
+  .card{border:1px solid var(--line);border-radius:9pt;padding:12pt;background:#fff}
+  .card h4{font-family:'Sora';font-size:11pt;color:var(--forest);margin-bottom:4pt}
+  .card p{font-size:9.5pt;color:#3c4c42;margin:0}
+  table{width:100%;border-collapse:collapse;margin:10pt 0;font-size:9.5pt}
+  th,td{text-align:left;padding:7pt 8pt;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:'Sora';color:var(--forest);font-size:8.5pt;text-transform:uppercase;letter-spacing:.06em}
+  .pill{display:inline-block;font-family:'Sora';font-weight:600;font-size:8pt;padding:2pt 8pt;border-radius:999px;background:#E3F0E7;color:var(--green-d)}
+  .foot{position:absolute;bottom:12mm;left:18mm;right:18mm;display:flex;justify-content:space-between;font-size:8pt;color:var(--muted);border-top:1px solid var(--line);padding-top:6pt}
+  .num{font-family:'Sora';font-weight:800;color:var(--leaf);font-size:26pt;line-height:1}
+  /* cover */
+  .cover{background:linear-gradient(160deg,#0E3B2C,#08281e);color:#fff;display:flex;flex-direction:column;justify-content:space-between}
+  .cover .top{display:flex;align-items:center;gap:12pt}
+  .mark{width:46pt;height:46pt;border-radius:12pt;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center}
+  .cover h1{font-family:'Sora';font-size:40pt;font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:0}
+  .cover .sub{font-size:13pt;color:#bfe6cd;margin-top:10pt;max-width:130mm}
+  .cover .tagbadge{display:inline-block;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:5pt 12pt;font-family:'Sora';font-weight:600;font-size:9pt;letter-spacing:.04em}
+  .cover .stat{display:flex;gap:22pt;margin-top:16pt}
+  .cover .stat b{font-family:'Sora';font-size:20pt;display:block}
+  .cover .stat span{font-size:8.5pt;color:#9fd3b2;text-transform:uppercase;letter-spacing:.08em}
+  .heroimg{height:52mm;border-radius:12pt;overflow:hidden;margin-top:14pt;position:relative;border:1px solid rgba(255,255,255,.15)}
+  .heroimg img{width:100%;height:100%;object-fit:cover;opacity:.9}
+  a{color:var(--green-d);text-decoration:none}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<section class="page cover">
+  <div>
+    <div class="top">
+      <div class="mark"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M12 21C6 21 4 14 5 6c6 0 9 3 9 9 0-4 3-7 8-7 .5 7-2 13-10 13Z" fill="#fff"/></svg></div>
+      <div><div style="font-family:'Sora';font-weight:800;font-size:15pt">Ewe ati Egbo</div><div style="font-size:8pt;letter-spacing:.22em;color:#9fd3b2">UK BOTANICAL MARKETPLACE</div></div>
+    </div>
+    <div class="heroimg"><img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1200&q=70" alt="botanicals"/></div>
+  </div>
+  <div>
+    <span class="tagbadge">Investment &amp; Acquisition Brief · 2026</span>
+    <h1>The trusted rail<br>for African<br>botanicals.</h1>
+    <p class="sub">A verified marketplace <b>and freight network</b> moving traditional herbs from African producers and diaspora sellers to customers across the United Kingdom — safely, legally, and at a margin.</p>
+    <div class="stat">
+      <div><b>~2.5M+</b><span>UK diaspora</span></div>
+      <div><b>2 takes</b><span>per order</span></div>
+      <div><b>Live</b><span>working demo</span></div>
+    </div>
+  </div>
+  <div style="font-size:8pt;color:#7fae95">“Ewe ati Egbo” — Yoruba for <i>leaves and roots</i>. Confidential.</div>
+</section>
+
+<!-- 1. THE 10-SECOND PITCH -->
+<section class="page">
+  <div class="kicker">Start here</div>
+  <h2>The whole thing in 10 seconds</h2>
+  <p class="lead">Millions of people in the UK cook, heal, and keep culture alive with African herbs. Buying them is a nightmare — scattered across WhatsApp, Instagram, corner shops and suitcase importers, with no trust, no labels, and shipping that barely works.</p>
+  <div class="hook">We fixed the boring, expensive, hard part — getting product from Africa to a UK doorstep, verified and legal — and wrapped a beautiful marketplace around it.</div>
+  <p>Sellers list. Customers buy in their own language (“ewuro”, “onugbu”, or <i>Vernonia amygdalina</i> — all the same leaf). Our own cargo arm and a network of onboarded cargo agents move the goods. We take a cut of the <b>product</b> and a cut of the <b>shipping</b>. Two revenue lines on every single order.</p>
+  <h3>Why anyone should care</h3>
+  <div class="grid2">
+    <div class="card"><h4>It's a real market, underserved</h4><p>A large, loyal diaspora buying weekly — and no one has given them a trusted, structured home to buy from.</p></div>
+    <div class="card"><h4>The moat is operational</h4><p>Anyone can copy a storefront. A working cross-border freight + compliance network is slow and expensive to rebuild. That's what a buyer pays a premium for.</p></div>
+    <div class="card"><h4>It already exists</h4><p>Not a slide deck. A working app with real search, a compliance engine (74 passing tests), a backend, and a public live demo you can open right now.</p></div>
+    <div class="card"><h4>It scales sideways</h4><p>The same rail replicates into US and EU diaspora corridors. Build once, relay everywhere.</p></div>
+  </div>
+  <div class="foot"><span>Ewe ati Egbo — Investment &amp; Acquisition Brief</span><span>1</span></div>
+</section>
+
+<!-- 2. THE PROBLEM -->
+<section class="page">
+  <div class="kicker">The problem</div>
+  <h2>Buying African herbs in the UK is broken</h2>
+  <p class="lead">The demand is not in question. The <i>experience</i> is.</p>
+  <p>Today a customer who wants bitter leaf, prekese, moringa or black soap hunts across a dozen disconnected places — and takes on all the risk themselves:</p>
+  <ul>
+    <li><b>No trust.</b> Who is this seller? Is the product what they say? If it never arrives, who do you call?</li>
+    <li><b>No information.</b> Wrong names, no ingredients, no origin, no storage or safety guidance.</li>
+    <li><b>No compliance.</b> Some products are food, some are cosmetics, some are medicines — and UK law treats each differently. Most informal sellers don't know, and don't care, until it becomes a problem.</li>
+    <li><b>Broken logistics.</b> The genuinely hard part is moving product from Africa to the UK reliably, legally and affordably. This is where the pain — and the money — actually lives.</li>
+  </ul>
+  <div class="hook">Everyone who has tried this built a prettier storefront. The storefront is the easy 20%. The unsolved 80% is the rail.</div>
+  <p>That gap is the opportunity. Whoever owns the trusted rail — the freight, the compliance, the verified supply — owns the category.</p>
+  <div class="foot"><span>Ewe ati Egbo — Investment &amp; Acquisition Brief</span><span>2</span></div>
+</section>
+
+<!-- 3. THE PRODUCT / FOUR SIDES -->
+<section class="page">
+  <div class="kicker">The product</div>
+  <h2>One platform, four sides</h2>
+  <p class="lead">A marketplace is only as strong as the sides it connects. We connect four — and the fourth is the one competitors ignore.</p>
+  <table>
+    <tr><th>Who</th><th>What they get</th></tr>
+    <tr><td><b>Customers</b> (UK)</td><td>Discovery, multilingual search, trusted product pages, a cross-border delivery quote <i>before</i> they pay, and order tracking to the door.</td></tr>
+    <tr><td><b>Sellers</b> (Africa &amp; UK)</td><td>Verification, a storefront, a guided listing wizard that keeps them compliant, and payouts — without having to solve shipping or UK law themselves.</td></tr>
+    <tr><td><b>Cargo agents</b></td><td>Our own arm <i>plus</i> onboarded third parties. They set routes and rates on corridors, receive consignments, update tracking, and get paid per leg.</td></tr>
+    <tr><td><b>Us (platform)</b></td><td>We verify everyone, enforce compliance, route the freight, split the money, and take a margin on both product and shipping.</td></tr>
+  </table>
+  <div class="hook">The cargo-agent side is the quiet superpower. It turns shipping from a cost we tolerate into a network we own.</div>
+  <h3>What it feels like to use</h3>
+  <p>A customer types a word from home — <b>“ewuro”</b> — and instantly sees verified bitter leaf, correctly named, with a badge that says a real person stands behind it and a claims-check that says it makes no illegal promises. They see “<b>Lagos → London · 5–9 days · £12</b>” before they commit. They tap buy. We do the rest.</p>
+  <div class="foot"><span>Ewe ati Egbo — Investment &amp; Acquisition Brief</span><span>3</span></div>
+</section>
+
+<!-- 4. THE MOAT -->
+<section class="page">
+  <div class="kicker">Why it's defensible</div>
+  <h2>The moat: four layers deep</h2>
+  <p class="lead">A pretty app is not a business. Here's what actually stops the next person from copying us.</p>
+  <table>
+    <tr><th>Layer</th><th>Why it's hard to copy</th></tr>
+    <tr><td><b>Logistics network</b></td><td>Onboarded cargo agents, proven corridors, customs know-how, consolidation. It compounds with volume and is slow &amp; costly to rebuild from zero.</td></tr>
+    <tr><td><b>Compliance rail</b></td><td>Product-class rules + UK import handling done <i>for</i> the seller. This is the barrier that keeps informal competitors informal.</td></tr>
+    <tr><td><b>Botanical data</b></td><td>A proprietary vernacular↔botanical dictionary across Yoruba, Igbo, Hausa and more — and an SEO magnet no generic marketplace has.</td></tr>
+    <tr><td><b>Verified trust</b></td><td>Two-sided liquidity of verified sellers and buyers — the classic marketplace cold-start advantage, once seeded.</td></tr>
+  </table>
+  <div class="hook">Consolidation is where the money hides: many small parcels on one corridor become one cheap consignment. The more volume, the wider the moat — and the fatter the margin.</div>
+  <div class="foot"><span>Ewe ati Egbo — Investment &amp; Acquisition Brief</span><span>4</span></div>
+</section>
+
+<!-- 5. COMPLIANCE AS A FEATURE -->
+<section class="page">
+  <div class="kicker">Compliance = de-risking</div>
+  <h2>The part that scares everyone else is our feature</h2>
+  <p class="lead">Herbal products in the UK are not one legal category. Get it wrong and you're an illegal pharmacy. We built the rules into the software so a seller <i>can't</i> get it wrong.</p>
+  <h3>Every product is one of four classes</h3>
+  <table>
+    <tr><th>Class</th><th>Examples</th><th>Route</th></tr>
+    <tr><td><b>A · Herb/botanical</b></td><td>Bitter leaf, prekese, moringa</td><td>Food / general law (FSA)</td></tr>
+    <tr><td><b>B · Supplement</b></td><td>Capsules, powders, tinctures</td><td>Food supplement (no disease claims)</td></tr>
+    <tr><td><b>C · Cosmetic</b></td><td>Black soap, shea, oils</td><td>UK cosmetics (OPSS)</td></tr>
+    <tr><td><b>D · Medicine</b></td><td>Anything sold “to treat”</td><td>MHRA — <b>closed by default</b></td></tr>
+  </table>
+  <h3>The claims engine (this is the magic)</h3>
+  <p>When a seller writes a listing, our engine scans it. Say “cures malaria and treats fibroids” and it is <b>blocked</b> — instantly, with the reason. Ingredients run through a traffic-light list: <span class="pill">🟢 green — listable</span> <span class="pill" style="background:#F7ECD8;color:#8a5b12">🟠 amber — review</span> <span class="pill" style="background:#F7E1DC;color:#a13a25">🔴 red — blocked</span></p>
+  <div class="hook">74 automated tests keep this honest — including a check that a seller can never quietly downgrade a risky herb to look harmless. Trust, provable in code.</div>
+  <p style="font-size:8.5pt;color:var(--muted)">Note: our classification is a design input; a UK-qualified regulatory/customs adviser signs off each class and corridor before launch. That review is scoped, not skipped.</p>
+  <div class="foot"><span>Ewe ati Egbo — Investment &amp; Acquisition Brief</span><span>5</span></div>
+</section>
+
+<!-- 6. TECHNOLOGY -->
+<section class="page">
+  <div class="kicker">It's built</div>
+  <h2>Real engineering, not vapourware</h2>
+  <p class="lead">Most brands at this stage have a deck. We have a running product you can open on your phone.</p>
+  <div class="grid2">
+    <div class="card"><h4>Shared engine</h4><p>Domain types, multilingual search, and the compliance engine live in one tested package — reused by app and backend. 74 tests, all green.</p></div>
+    <div class="card"><h4>Owned backend</h4><p>Fastify + PostgreSQL. Catalog, search and compliance APIs. Portable and not vendor-locked — the right shape for an asset you intend to sell.</p></div>
+    <div class="card"><h4>Mobile + web app</h4><p>One Expo codebase for iOS, Android and web. Photography-led, responsive, animated — verified-seller trust cues throughout.</p></div>
+    <div class="card"><h4>Botanical dataset</h4><p>A curated, categorised, compliance-flagged dictionary of Nigerian/Yoruba herbs — the seed of a data moat that grows with every tradition added.</p></div>
+  </div>
+  <div class="hook">Open the live demo: <b>gbadebomotunrayo.github.io/Ewe-ati-egbo</b> — search a herb in Yoruba, watch it resolve, and see the trust panel on a product page.</div>
+  <div class="foot"><span>Ewe ati Egbo — Investment &amp; Acquisition Brief</span><span>6</span></div>
+</section>
+
+<!-- 7. BUSINESS MODEL -->
+<section class="page">
+  <div class="kicker">How it makes money</div>
+  <h2>Two takes on every order</h2>
+  <p class="lead">A pure marketplace earns once. We earn twice — because we own the shipping.</p>
+  <table>
+    <tr><th>Stream</th><th>Detail</th></tr>
+    <tr><td><b>Product commission</b></td><td>8–12% of each sale</td></tr>
+    <tr><td><b>Logistics margin</b></td><td>Markup on freight + consolidation spread — <b>the fat line</b></td></tr>
+    <tr><td><b>Cargo-agent fee</b></td><td>A platform cut on legs routed to third-party agents</td></tr>
+    <tr><td>Subscriptions / featured (later)</td><td>Seller tiers, promoted listings</td></tr>
+    <tr><td>Wholesale &amp; data (later)</td><td>B2B corridors; demand data; the rail itself, licensable</td></tr>
+  </table>
+  <h3>One order, illustratively</h3>
+  <p>£30 product + £12 delivery = <b>£42 paid</b>. Commission ≈ £3. Delivery margin ≈ £4. <b>Platform gross ≈ £7+ per order</b> — while the seller and the cargo agent are also paid. The delivery line, not the commission, is where a durable margin lives, and it's defensible because we own the rail.</p>
+  <div class="hook">Double the revenue-per-order of a normal marketplace, in a niche the giants ignore. That's the fundable sentence.</div>
+  <div class="foot"><span>Ewe ati Egbo — Investment &amp; Acquisition Brief</span><span>7</span></div>
+</section>
+
+<!-- 8. MARKET + TRACTION + ASK -->
+<section class="page">
+  <div class="kicker">Market · Status · The ask</div>
+  <h2>Big lane, real start, clear next step</h2>
+  <h3>The market</h3>
+  <p>Beachhead: the West African &amp; Caribbean UK diaspora (~2.5M+), buying herbs, teas, foods and natural beauty every week. Then more African origins, then the same engine into <b>US and EU diaspora corridors</b>. Reusable assets: the rail, the compliance engine, the dataset.</p>
+  <h3>What exists today (honestly)</h3>
+  <ul>
+    <li>Working app (iOS/Android/web) with a <b>public live demo</b>.</li>
+    <li>Compliance engine v2 with 74 passing tests; owned Fastify/Postgres backend.</li>
+    <li>Curated, compliance-flagged botanical dataset.</li>
+    <li>Full product, market, logistics and compliance documentation.</li>
+    <li>Not yet: real sellers onboarded, payments live, first corridor run. That's exactly what the next step funds.</li>
+  </ul>
+  <h3>Why now — the exit thesis</h3>
+  <p>An acquirer buys <b>infrastructure</b>: a working cross-border freight network, a compliant import pipeline, two-sided liquidity, and a proprietary dataset. Natural buyers — diaspora fintech/logistics players, ethnic-foods distributors, marketplace consolidators — pay premiums for operational moats. This is one.</p>
+  <div class="hook">The ask: capital to seed one corridor (sellers + 1–2 cargo agents) and run 100 real end-to-end orders — proving the rail and the unit economics. Everything is sequenced around that proof.</div>
+  <p style="margin-top:14pt;font-size:10pt;color:var(--muted)">Let's talk. &nbsp; · &nbsp; Ewe ati Egbo — leaves and roots, moved with trust.</p>
+  <div class="foot"><span>Ewe ati Egbo — Investment &amp; Acquisition Brief</span><span>8</span></div>
+</section>
+
+</body>
+</html>
