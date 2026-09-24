@@ -14,8 +14,12 @@ which the backend seeds into Postgres and the app searches.
 > review/docs · 🔴 red = blocked (toxic or medicine-only).
 
 Sources: DiscoverYoruba, tewetegbo.com, botanicaonline, Guardian NG / Nigerian
-Medicine list. Curated + cross-checked against documented botanical names. **Not
-exhaustive** — a starting ~50, structured to extend by tradition and language.
+Medicine list, plus 5 entries cross-checked out of the community compilation
+["Yoruba Medicinal Leaves and Names"](https://www.scribd.com/document/506090256/Lists-of-Yoruba-Medicinal-Leaves-and-Herbs)
+(§9 below — that source is ~200+ names across 8 mostly-paywalled pages and is
+**not itself verified**; only the 5 rows we cross-checked were added). Curated +
+cross-checked against documented botanical names. **Not exhaustive** — a starting
+~55, structured to extend by tradition and language.
 
 ## Categories
 
@@ -29,6 +33,7 @@ exhaustive** — a starting ~50, structured to extend by tradition and language.
 | 6 | Flowers, aromatics & teas | Zobo/roselle, lemongrass, leaf teas |
 | 7 | Topical & cosmetic botanicals | Black soap, shea, henna, camwood, aloe |
 | 8 | Traditional formulas (agbo) | Prepared medicinal decoctions — reference only |
+| 9 | Candidate additions (unverified source) | Cross-checked picks from a community list — see note above |
 
 ---
 
@@ -121,6 +126,26 @@ holds a THR/MA. Documented here so the compliance engine recognises and rejects 
 |---|---|---|---|
 | Agbo iba | Fever/malaria decoction | *Morinda lucida*, neem, lemongrass | 🔴 |
 | Agbo jedi-jedi | "Internal heat"/haemorrhoid decoction | Multi-herb | 🔴 |
+
+## 9 · Candidate additions (from an unverified community source)
+
+Cross-checked picks out of
+["Yoruba Medicinal Leaves and Names"](https://www.scribd.com/document/506090256/Lists-of-Yoruba-Medicinal-Leaves-and-Herbs)
+— a dense, ~200+ name personal compilation, dialect variants (Oyo/Ekiti) included,
+most of it behind Scribd's paywall and **not independently verified by us**. Only
+these 5 rows were added, and only after checking each pairing against general
+botanical references; one scientific-name pairing in the source (*afomo* /
+mistletoe) looked mis-transcribed and was corrected here rather than copied as-is.
+Treat the rest of that document as an unreviewed lead for a future pass, not a
+source of truth on its own.
+
+| Yoruba | English | Botanical | Part | Note | Flag |
+|---|---|---|---|---|---|
+| Ado / Ato | Bottle gourd | *Lagenaria siceraria* | Fruit | Dried shells used as containers | 🟢 |
+| Adodo | Desmodium | *Desmodium* spp. | Leaf/whole plant | Chest/liver decoction associations — review | 🟠 |
+| Afon | Chinaberry / Persian lilac | *Melia azedarach* | Leaf/fruit | **Fruit/seeds toxic if ingested** | 🔴 |
+| Afomo | African mistletoe | *Tapinanthus bangwensis* | Leaf/stem | BP/diabetes folk claims; varies by host tree — review | 🟠 |
+| Abura | Abura | *Mitragyna stipulosa* | Bark | Same genus as kratom (different species) — review | 🟠 |
 
 ---
 
