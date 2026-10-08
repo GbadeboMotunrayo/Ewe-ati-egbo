@@ -3,12 +3,13 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Store, Truck, MapPin, Heart, LifeBuoy, ShieldCheck, ChevronRight, LogOut } from 'lucide-react-native';
-import { colors, fonts, motion, radius, spacing } from '@/theme/theme';
+import { aurora, colors, fonts, motion, radius, spacing } from '@/theme/theme';
 import { Card } from '@/components/Card';
 import { PressableScale } from '@/components/PressableScale';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/state/auth';
-import { useLayout } from '@/hooks/useLayout';
+import { useLayout, useTabBarSpace } from '@/hooks/useLayout';
+import { Backdrop } from '@/components/Backdrop';
 
 const ROWS = [
   { icon: MapPin, label: 'Addresses' },
@@ -24,12 +25,15 @@ export default function AccountScreen() {
   const { demoMode, session, signOut } = useAuth();
   const toast = useToast();
   const L = useLayout();
+  const { contentPad } = useTabBarSpace();
 
   const email = session?.user.email;
   const initials = email ? email.slice(0, 2).toUpperCase() : 'EE';
 
   return (
-    <ScrollView style={styles.screen} contentContainerStyle={{ paddingTop: insets.top + spacing.md, paddingBottom: spacing.xl * 2 }}>
+    <View style={styles.screen}>
+      <Backdrop />
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingTop: insets.top + spacing.md, paddingBottom: contentPad }}>
       <View style={{ width: '100%', maxWidth: 640, alignSelf: 'center', paddingHorizontal: L.gutter }}>
         <Animated.View entering={FadeInDown.duration(motion.base)} style={styles.header}>
           <View style={styles.avatar}>
@@ -71,11 +75,12 @@ export default function AccountScreen() {
         <Text style={styles.footer}>Ewe ati Egbo · leaves and roots, moved with trust</Text>
       </View>
     </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.background },
+  screen: { flex: 1, backgroundColor: aurora.base },
   header: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, marginBottom: spacing.lg },
   avatar: { width: 56, height: 56, borderRadius: 28, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
   avatarText: { fontFamily: fonts.heading, fontSize: 18, color: colors.white },

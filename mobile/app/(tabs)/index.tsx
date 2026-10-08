@@ -7,24 +7,27 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, {
   FadeInDown,
   interpolate,
-  runOnJS,
   useAnimatedReaction,
   Extrapolation,
   useAnimatedScrollHandler,
   useAnimatedStyle,
+  useReducedMotion,
   useSharedValue,
   withSequence,
   withSpring,
 } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 import { Search, ShoppingBag, ArrowRight } from 'lucide-react-native';
-import { colors, fonts, motion, radius, shadow, spacing } from '@/theme/theme';
+import { aurora, colors, fonts, gloss, motion, radius, shadow, spacing } from '@/theme/theme';
 import { IMAGES, products, traditions, type Product } from '@/data/mockData';
 import { ProductCard } from '@/components/ProductCard';
 import { Pill } from '@/components/Pill';
 import { PressableScale } from '@/components/PressableScale';
+import { Backdrop, Orb } from '@/components/Backdrop';
+import { Glass, GlassFill, Sheen } from '@/components/Glass';
 import { useCart } from '@/state/cart';
 import { useAuth } from '@/state/auth';
-import { useLayout } from '@/hooks/useLayout';
+import { useLayout, useTabBarSpace } from '@/hooks/useLayout';
 
 // Tiles map to real catalogue categories so each one opens a filtered list.
 const CATEGORY_TILES = [
@@ -39,29 +42,33 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { demoMode } = useAuth();
   const L = useLayout();
+  const { contentPad } = useTabBarSpace();
+  const reduced = useReducedMotion();
 
   const scrollY = useSharedValue(0);
   const onScroll = useAnimatedScrollHandler((e) => {
-    scrollY.value = e.contentOffset.y;
+    scrollY.set(e.contentOffset.y);
   });
-  // The compact bar only accepts touches once it's actually visible.
+  // The compact bar only accepts touches once it's actually visible — one RN call per
+  // threshold crossing, never per frame.
   const [compactVisible, setCompactVisible] = useState(false);
   useAnimatedReaction(
-    () => scrollY.value > 120,
+    () => scrollY.get() > 120,
     (visible, prev) => {
-      if (visible !== prev) runOnJS(setCompactVisible)(visible);
+      if (visible !== prev) scheduleOnRN(setCompactVisible, visible);
     }
   );
 
-  // Compact bar fades/slides in once the big hero has scrolled away.
+  // Frosted bar fades in once the hero has scrolled away. The blur itself is static —
+  // only the wrapper's opacity moves (animating blur intensity re-renders it per frame).
   const compactBar = useAnimatedStyle(() => ({
-    opacity: interpolate(scrollY.value, [90, 150], [0, 1], Extrapolation.CLAMP),
-    transform: [{ translateY: interpolate(scrollY.value, [90, 150], [-12, 0], Extrapolation.CLAMP) }],
+    opacity: interpolate(scrollY.get(), [90, 150], [0, 1], Extrapolation.CLAMP),
+    transform: [{ translateY: reduced ? 0 : interpolate(scrollY.get(), [90, 150], [-12, 0], Extrapolation.CLAMP) }],
   }));
   // Hero drifts slower than the page (gentle parallax) and softens as it leaves.
   const heroStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: interpolate(scrollY.value, [-100, 0, 200], [-30, 0, 60], Extrapolation.CLAMP) }],
-    opacity: interpolate(scrollY.value, [0, 180], [1, 0.4], Extrapolation.CLAMP),
+    transform: [{ translateY: reduced ? 0 : interpolate(scrollY.get(), [-100, 0, 200], [-30, 0, 60], Extrapolation.CLAMP) }],
+    opacity: interpolate(scrollY.get(), [0, 180], [1, 0.4], Extrapolation.CLAMP),
   }));
 
   const trending = products;
@@ -70,8 +77,12 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.screen}>
-      <Animated.ScrollView onScroll={onScroll} scrollEventThrottle={16} contentContainerStyle={{ paddingBottom: spacing.xl * 2 }}>
-        <LinearGradient colors={[colors.primary, colors.primaryDark]} style={[styles.hero, { paddingTop: insets.top + spacing.md }]}>
+      <Backdrop />
+      <Animated.ScrollView onScroll={onScroll} scrollEventThrottle={16} contentContainerStyle={{ paddingBottom: contentPad }}>
+        <LinearGradient colors={gloss.hero} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={[styles.hero, { paddingTop: insets.top + spacing.md }]}>
+          {/* Glossy hero: a soft light pool + specular sheen over the green. */}
+          <Orb id="heroGlow" color={aurora.leaf} size={420} opacity={0.55} style={{ top: -200, right: -120 }} />
+          <Sheen soft height="60%" />
           <Animated.View style={[inner, { paddingHorizontal: L.gutter }, heroStyle]}>
             <View style={styles.heroTop}>
               <Animated.View entering={FadeInDown.duration(motion.slow)}>
@@ -84,14 +95,16 @@ export default function HomeScreen() {
             </View>
             <Animated.View entering={FadeInDown.delay(80).duration(motion.slow)}>
               <PressableScale
-                style={styles.search}
+                style={styles.searchShadow}
                 scaleTo={0.98}
                 onPress={() => router.push('/explore')}
                 accessibilityRole="search"
                 accessibilityLabel="Search herbs, botanicals and products"
               >
-                <Search size={18} color={colors.textSecondary} />
-                <Text style={styles.searchText}>Search herbs, botanicals, products…</Text>
+                <Glass radius={radius.md} style={styles.search}>
+                  <Search size={18} color={colors.primaryDark} />
+                  <Text style={styles.searchText}>Search herbs, botanicals, products…</Text>
+                </Glass>
               </PressableScale>
             </Animated.View>
           </Animated.View>
@@ -99,8 +112,10 @@ export default function HomeScreen() {
 
         <View style={inner}>
           {demoMode && (
-            <Animated.View entering={FadeInDown.delay(120)} style={[styles.demo, { marginHorizontal: L.gutter }]}>
-              <Text style={styles.demoText}>Demo mode — showing sample data. Nothing you do here is charged or saved.</Text>
+            <Animated.View entering={FadeInDown.delay(120)} style={{ marginHorizontal: L.gutter, marginTop: spacing.md }}>
+              <Glass variant="amber" blur={false} radius={radius.md} style={styles.demo}>
+                <Text style={styles.demoText}>Demo mode — showing sample data. Nothing you do here is charged or saved.</Text>
+              </Glass>
             </Animated.View>
           )}
 
@@ -116,10 +131,10 @@ export default function HomeScreen() {
               <View style={styles.bannerInner}>
                 <Text style={[styles.bannerTitle, L.isTablet && { fontSize: 30, lineHeight: 36 }]}>Nature's Goodness,{'\n'}Naturally</Text>
                 <Text style={styles.bannerSub}>Authentic botanicals from verified sellers</Text>
-                <View style={styles.bannerBtn}>
+                <Glass variant="dark" radius={radius.pill} style={styles.bannerBtn}>
                   <Text style={styles.bannerBtnText}>Shop now</Text>
-                  <ArrowRight size={14} color={colors.primaryDark} />
-                </View>
+                  <ArrowRight size={14} color={colors.white} />
+                </Glass>
               </View>
             </PressableScale>
           </Animated.View>
@@ -129,12 +144,14 @@ export default function HomeScreen() {
               {CATEGORY_TILES.map((c, i) => (
                 <Animated.View key={c.label} entering={FadeInDown.delay(220 + i * motion.stagger)} style={{ flex: 1 }}>
                   <PressableScale
-                    style={styles.tile}
+                    style={styles.tileShadow}
                     onPress={() => router.push({ pathname: '/explore', params: { category: c.category } })}
                     accessibilityLabel={`Shop ${c.label}`}
                   >
-                    <Image source={{ uri: c.image }} style={[styles.tileImg, { height: L.isTablet ? 110 : 68 }]} contentFit="cover" transition={300} />
-                    <Text style={styles.tileLabel} numberOfLines={1}>{c.label}</Text>
+                    <Glass variant="card" blur={false} radius={radius.md + 2} style={styles.tile}>
+                      <Image source={{ uri: c.image }} style={[styles.tileImg, { height: L.isTablet ? 110 : 64 }]} contentFit="cover" transition={300} />
+                      <Text style={styles.tileLabel} numberOfLines={1}>{c.label}</Text>
+                    </Glass>
                   </PressableScale>
                 </Animated.View>
               ))}
@@ -148,7 +165,7 @@ export default function HomeScreen() {
                   key={t}
                   label={t}
                   size="md"
-                  tint={colors.amberTint}
+                  tint="rgba(255,255,255,0.55)"
                   color={colors.ochre}
                   onPress={() => router.push({ pathname: '/explore', params: { tradition: t } })}
                 />
@@ -168,6 +185,7 @@ export default function HomeScreen() {
 
       {/* Compact header that appears after scrolling */}
       <Animated.View pointerEvents={compactVisible ? 'box-none' : 'none'} style={[styles.compact, { paddingTop: insets.top + 6 }, compactBar]}>
+        <GlassFill radius={0} />
         <View style={[inner, styles.compactInner, { paddingHorizontal: L.gutter }]}>
           <Text style={styles.compactBrand}>Ewe ati Egbo</Text>
           <View style={styles.compactActions}>
@@ -234,6 +252,7 @@ function CartButton({ light }: { light?: boolean }) {
       onPress={() => router.push('/cart')}
       accessibilityLabel={count > 0 ? `Basket, ${count} ${count === 1 ? 'item' : 'items'}` : 'Basket, empty'}
     >
+      {!light && <GlassFill variant="dark" radius={22} />}
       <ShoppingBag size={20} color={light ? colors.primary : colors.white} />
       {count > 0 && (
         <Animated.View style={[styles.cartBadge, badgeStyle]}>
@@ -273,24 +292,29 @@ function Section({
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.background },
-  hero: { paddingBottom: spacing.lg, borderBottomLeftRadius: radius.lg + 4, borderBottomRightRadius: radius.lg + 4, overflow: 'hidden' },
+  screen: { flex: 1, backgroundColor: aurora.base },
+  hero: { paddingBottom: spacing.lg + 4, borderBottomLeftRadius: radius.lg + 8, borderBottomRightRadius: radius.lg + 8, overflow: 'hidden', ...shadow.lg },
   heroTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   brand: { fontFamily: fonts.heading, fontSize: 24, color: colors.white },
   tagline: { fontFamily: fonts.body, fontSize: 13, color: colors.greenTint, marginTop: 2 },
-  cartBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(255,255,255,0.18)', alignItems: 'center', justifyContent: 'center' },
-  iconBtnLight: { width: 40, height: 40, borderRadius: 20, backgroundColor: colors.greenTint, alignItems: 'center', justifyContent: 'center' },
+  cartBtn: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
+  iconBtnLight: {
+    width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(31,107,59,0.1)', alignItems: 'center', justifyContent: 'center',
+    borderWidth: 1, borderColor: 'rgba(255,255,255,0.8)',
+  },
   cartBadge: {
     position: 'absolute', top: -3, right: -3, backgroundColor: colors.ochre, borderRadius: 10, minWidth: 20, height: 20,
     alignItems: 'center', justifyContent: 'center', paddingHorizontal: 4, borderWidth: 2, borderColor: colors.white,
   },
   cartBadgeText: { fontFamily: fonts.bodyMedium, fontSize: 10, color: colors.white },
+  searchShadow: { marginTop: spacing.md, borderRadius: radius.md, ...shadow.md, shadowOpacity: 0.18 },
+  // Denser than default glass so placeholder text stays readable over the deep green.
   search: {
-    marginTop: spacing.md, backgroundColor: colors.surface, borderRadius: radius.md, paddingVertical: 14, paddingHorizontal: spacing.md,
-    flexDirection: 'row', alignItems: 'center', gap: spacing.sm, ...shadow.md,
+    backgroundColor: 'rgba(255,255,255,0.8)', paddingVertical: 14, paddingHorizontal: spacing.md,
+    flexDirection: 'row', alignItems: 'center', gap: spacing.sm,
   },
   searchText: { fontFamily: fonts.body, fontSize: 14, color: colors.textSecondary },
-  demo: { backgroundColor: colors.amberTint, marginTop: spacing.md, borderRadius: radius.md, padding: spacing.sm + 2 },
+  demo: { padding: spacing.sm + 2 },
   demoText: { fontFamily: fonts.body, fontSize: 12, color: colors.ochre },
   section: { marginTop: spacing.lg, gap: spacing.sm + 2 },
   sectionHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
@@ -304,18 +328,16 @@ const styles = StyleSheet.create({
   bannerTitle: { fontFamily: fonts.heading, fontSize: 22, color: colors.white, lineHeight: 27 },
   bannerSub: { fontFamily: fonts.body, fontSize: 12, color: 'rgba(255,255,255,0.9)', marginTop: 6, maxWidth: 220 },
   bannerBtn: {
-    alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: colors.white,
-    borderRadius: radius.pill, paddingHorizontal: 16, paddingVertical: 9, marginTop: 12,
+    alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', gap: 6,
+    paddingHorizontal: 16, paddingVertical: 9, marginTop: 12,
   },
-  bannerBtnText: { fontFamily: fonts.headingMedium, fontSize: 12, color: colors.primaryDark },
+  bannerBtnText: { fontFamily: fonts.headingMedium, fontSize: 12, color: colors.white },
   tiles: { flexDirection: 'row' },
-  tile: { alignItems: 'center' },
-  tileImg: { width: '100%', borderRadius: radius.md, backgroundColor: colors.cream },
+  tileShadow: { borderRadius: radius.md + 2, ...shadow.sm },
+  tile: { alignItems: 'center', padding: 5, paddingBottom: 8 },
+  tileImg: { width: '100%', borderRadius: radius.md - 2, backgroundColor: colors.cream },
   tileLabel: { fontFamily: fonts.bodyMedium, fontSize: 12, color: colors.text, marginTop: 6 },
-  compact: {
-    position: 'absolute', top: 0, left: 0, right: 0, backgroundColor: 'rgba(255,255,255,0.97)',
-    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border, paddingBottom: 8, ...shadow.sm,
-  },
+  compact: { position: 'absolute', top: 0, left: 0, right: 0, paddingBottom: 8, ...shadow.sm },
   compactInner: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   compactBrand: { fontFamily: fonts.heading, fontSize: 17, color: colors.primary },
   compactActions: { flexDirection: 'row', gap: spacing.sm },

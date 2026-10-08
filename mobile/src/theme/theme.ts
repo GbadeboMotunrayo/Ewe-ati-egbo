@@ -80,9 +80,38 @@ export const shadow = {
   lg: { shadowColor: '#3A2A1E', shadowOpacity: 0.14, shadowRadius: 24, shadowOffset: { width: 0, height: 12 }, elevation: 8 },
 } as const;
 
+// Glass — frosted surfaces over the botanical backdrop. `fill` is the milky tint laid
+// over the blur; `rim` is the 1px specular edge that makes glass read as glass.
+export const glass = {
+  light: { fill: 'rgba(255,255,255,0.55)', rim: 'rgba(255,255,255,0.75)', blur: 40, tint: 'light' as const },
+  // Cards in scrolling lists: no per-card blur (cost), so a denser fill carries the look.
+  card: { fill: 'rgba(255,255,255,0.72)', rim: 'rgba(255,255,255,0.9)' },
+  // Glass sitting on the deep-green hero / dark imagery.
+  dark: { fill: 'rgba(255,255,255,0.16)', rim: 'rgba(255,255,255,0.35)', blur: 30, tint: 'dark' as const },
+  amber: { fill: 'rgba(247,236,216,0.6)', rim: 'rgba(255,255,255,0.7)' },
+} as const;
+
+// Gloss — specular sheen + the glossy brand-green used on primary actions.
+export const gloss = {
+  sheen: ['rgba(255,255,255,0.55)', 'rgba(255,255,255,0.08)', 'rgba(255,255,255,0)'] as const,
+  sheenSoft: ['rgba(255,255,255,0.28)', 'rgba(255,255,255,0)'] as const,
+  green: ['#2E8A50', '#1F6B3B', '#154D2A'] as const,
+  hero: ['#2A7D49', '#1F6B3B', '#123F24'] as const,
+} as const;
+
+// Ambient backdrop — the soft botanical light that glass refracts.
+export const aurora = {
+  base: '#F4EFE5',
+  leaf: '#7FBF8E',
+  forest: '#1F6B3B',
+  ochre: '#E0A458',
+  sun: '#F2D6A2',
+} as const;
+
 // Motion — springs feel physical; durations stay short so the app never feels slow.
 export const motion = {
-  press: { damping: 18, stiffness: 320, mass: 0.6 },
+  // Press feedback: fast, no overshoot (tens of taps a day — it should feel instant).
+  press: { duration: 150, dampingRatio: 1 },
   pop: { damping: 10, stiffness: 260, mass: 0.7 },
   fast: 160,
   base: 240,

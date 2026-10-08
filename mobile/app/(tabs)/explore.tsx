@@ -4,12 +4,14 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeInDown, FadeOut, LinearTransition } from 'react-native-reanimated';
 import { Search, X, SearchX } from 'lucide-react-native';
-import { colors, fonts, motion, radius, shadow, spacing } from '@/theme/theme';
+import { aurora, colors, fonts, motion, radius, shadow, spacing } from '@/theme/theme';
 import { categories, searchProducts } from '@/data/mockData';
 import { ProductCard } from '@/components/ProductCard';
 import { Pill } from '@/components/Pill';
 import { PressableScale } from '@/components/PressableScale';
-import { useLayout } from '@/hooks/useLayout';
+import { Backdrop } from '@/components/Backdrop';
+import { Glass, GlassFill } from '@/components/Glass';
+import { useLayout, useTabBarSpace } from '@/hooks/useLayout';
 
 const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
 
@@ -17,6 +19,7 @@ export default function ExploreScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const L = useLayout();
+  const { contentPad } = useTabBarSpace();
   const params = useLocalSearchParams<{ category?: string; tradition?: string; q?: string }>();
 
   const [query, setQuery] = useState(first(params.q) ?? '');
@@ -41,12 +44,14 @@ export default function ExploreScreen() {
 
   return (
     <View style={[styles.screen, { paddingTop: insets.top + spacing.sm }]}>
+      <Backdrop />
       <View style={[styles.inner, { maxWidth: L.contentMaxWidth, paddingHorizontal: L.gutter }]}>
         <Animated.Text entering={FadeInDown.duration(motion.base)} style={styles.h1} accessibilityRole="header">
           Explore
         </Animated.Text>
         <Animated.View entering={FadeInDown.delay(60).duration(motion.base)} style={styles.searchBar}>
-          <Search size={18} color={colors.textSecondary} />
+          <GlassFill radius={radius.md} />
+          <Search size={18} color={colors.primaryDark} />
           <TextInput
             style={[styles.input, Platform.OS === 'web' && ({ outlineStyle: 'none' } as object)]}
             placeholder={L.isTablet ? "Try “ewuro”, “bitter leaf” or a botanical name" : "Try “ewuro” or “bitter leaf”"}
@@ -103,7 +108,7 @@ export default function ExploreScreen() {
         numColumns={L.columns}
         style={{ flex: 1 }}
         columnWrapperStyle={{ gap: L.gap }}
-        contentContainerStyle={[styles.list, { gap: L.gap, paddingHorizontal: L.gutter, maxWidth: L.contentMaxWidth, width: '100%', alignSelf: 'center' }]}
+        contentContainerStyle={[styles.list, { gap: L.gap, paddingHorizontal: L.gutter, paddingBottom: contentPad, maxWidth: L.contentMaxWidth, width: '100%', alignSelf: 'center' }]}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
         renderItem={({ item, index }) => (
@@ -133,15 +138,18 @@ export default function ExploreScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.background },
+  screen: { flex: 1, backgroundColor: aurora.base },
   inner: { width: '100%', alignSelf: 'center' },
-  h1: { fontFamily: fonts.heading, fontSize: 24, color: colors.text, marginBottom: spacing.sm },
+  h1: { fontFamily: fonts.heading, fontSize: 28, color: colors.text, marginBottom: spacing.sm },
   searchBar: {
-    flexDirection: 'row', alignItems: 'center', gap: spacing.sm, backgroundColor: colors.surface, borderRadius: radius.md,
-    borderWidth: 1, borderColor: colors.border, paddingLeft: spacing.md, paddingRight: spacing.xs, height: 50, ...shadow.sm,
+    flexDirection: 'row', alignItems: 'center', gap: spacing.sm, borderRadius: radius.md,
+    paddingLeft: spacing.md, paddingRight: spacing.xs, height: 52, ...shadow.md,
   },
   input: { flex: 1, fontFamily: fonts.body, fontSize: 15, color: colors.text, height: '100%' },
-  clearBtn: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.cream },
+  clearBtn: {
+    width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center',
+    backgroundColor: 'rgba(31,107,59,0.08)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.8)',
+  },
   chips: { gap: spacing.sm, paddingVertical: spacing.md },
   metaRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: spacing.sm },
   hint: { fontFamily: fonts.bodyMedium, fontSize: 12, color: colors.textSecondary },

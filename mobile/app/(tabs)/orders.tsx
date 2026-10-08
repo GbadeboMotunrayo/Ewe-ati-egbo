@@ -4,26 +4,30 @@ import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, useAnimatedStyle, useSharedValue, withDelay, withTiming, Easing } from 'react-native-reanimated';
 import { Check, Package } from 'lucide-react-native';
-import { colors, fonts, motion, radius, spacing } from '@/theme/theme';
+import { aurora, colors, fonts, motion, radius, spacing } from '@/theme/theme';
 import { orders, type Order } from '@/data/mockData';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
 import { gbp } from '@/lib/format';
 import { useAuth } from '@/state/auth';
-import { useLayout } from '@/hooks/useLayout';
+import { useLayout, useTabBarSpace } from '@/hooks/useLayout';
+import { Backdrop } from '@/components/Backdrop';
 
 export default function OrdersScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { demoMode } = useAuth();
   const L = useLayout();
+  const { contentPad } = useTabBarSpace();
 
   // Real users never see the sample orders — only demo builds do.
   // TODO(live): load the signed-in user's orders from the API.
   const list: Order[] = demoMode ? orders : [];
 
   return (
-    <ScrollView style={styles.screen} contentContainerStyle={{ paddingTop: insets.top + spacing.md, paddingBottom: spacing.xl * 2 }}>
+    <View style={styles.screen}>
+      <Backdrop />
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingTop: insets.top + spacing.md, paddingBottom: contentPad }}>
       <View style={{ width: '100%', maxWidth: L.isDesktop ? 820 : L.contentMaxWidth, alignSelf: 'center', paddingHorizontal: L.gutter }}>
         <Animated.Text entering={FadeInDown.duration(motion.base)} style={styles.h1} accessibilityRole="header">
           Your orders
@@ -46,6 +50,7 @@ export default function OrdersScreen() {
         )}
       </View>
     </ScrollView>
+    </View>
   );
 }
 
@@ -96,7 +101,7 @@ function OrderCard({ order: o, index }: { order: Order; index: number }) {
 
 const DOT = 22;
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.background },
+  screen: { flex: 1, backgroundColor: aurora.base },
   h1: { fontFamily: fonts.heading, fontSize: 24, color: colors.text },
   demo: { fontFamily: fonts.body, fontSize: 12, color: colors.ochre, marginTop: 2 },
   card: { marginTop: spacing.md, gap: spacing.sm },

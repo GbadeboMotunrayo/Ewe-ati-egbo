@@ -5,7 +5,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import Animated, { FadeIn, FadeInDown, FadeOutLeft, LinearTransition } from 'react-native-reanimated';
 import { X, Trash2, ShoppingBag, TriangleAlert, Lock } from 'lucide-react-native';
-import { colors, fonts, motion, radius, shadow, spacing } from '@/theme/theme';
+import { aurora, colors, fonts, motion, radius, shadow, spacing } from '@/theme/theme';
+import { Backdrop } from '@/components/Backdrop';
+import { Glass, GlassFill } from '@/components/Glass';
 import { sellerById, type Product } from '@/data/mockData';
 import { gbp } from '@/lib/format';
 import { Button } from '@/components/Button';
@@ -71,7 +73,9 @@ export default function CartScreen() {
 
   return (
     <View style={styles.screen}>
+      <Backdrop />
       <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
+        <GlassFill radius={0} sheen={false} />
         <View style={[styles.headerInner, { maxWidth: L.contentMaxWidth, paddingHorizontal: L.gutter }]}>
           <View>
             <Text style={styles.title} accessibilityRole="header">Your basket</Text>
@@ -123,8 +127,10 @@ export default function CartScreen() {
           </ScrollView>
 
           {!L.isTablet && (
-            <Animated.View entering={FadeInDown.duration(motion.base)} style={[styles.bar, { paddingBottom: insets.bottom + spacing.sm }]}>
-              {summary}
+            <Animated.View entering={FadeInDown.duration(motion.base)} style={[styles.barShadow, { bottom: Math.max(insets.bottom, 12) }]}>
+              <Glass radius={radius.lg + 6} style={styles.bar}>
+                {summary}
+              </Glass>
             </Animated.View>
           )}
         </>
@@ -171,12 +177,15 @@ function Row({ label, value, bold }: { label: string; value: string; bold?: bool
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.background },
-  header: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border, paddingBottom: spacing.sm, backgroundColor: colors.background },
+  screen: { flex: 1, backgroundColor: aurora.base },
+  header: { borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.8)', paddingBottom: spacing.sm, ...shadow.sm },
   headerInner: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', alignSelf: 'center' },
   title: { fontFamily: fonts.heading, fontSize: 22, color: colors.text },
   count: { fontFamily: fonts.body, fontSize: 13, color: colors.textSecondary },
-  close: { width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.surface, ...shadow.sm },
+  close: {
+    width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.7)',
+    borderWidth: 1, borderColor: 'rgba(255,255,255,0.95)', ...shadow.sm,
+  },
   content: { paddingTop: spacing.md, gap: spacing.lg, width: '100%', alignSelf: 'center' },
   contentWide: { flexDirection: 'row', alignItems: 'flex-start' },
   sideSummary: { width: 340 },
@@ -194,10 +203,8 @@ const styles = StyleSheet.create({
   divider: { height: StyleSheet.hairlineWidth, backgroundColor: colors.border, marginVertical: 4 },
   warn: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: colors.redTint, borderRadius: radius.sm, padding: spacing.sm },
   warnText: { fontFamily: fonts.bodyMedium, fontSize: 12, color: colors.red, flexShrink: 1 },
-  bar: {
-    position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: colors.surface, borderTopLeftRadius: radius.lg, borderTopRightRadius: radius.lg,
-    paddingHorizontal: spacing.md, paddingTop: spacing.md, ...shadow.lg,
-  },
+  barShadow: { position: 'absolute', left: 12, right: 12, borderRadius: radius.lg + 6, ...shadow.lg },
+  bar: { paddingHorizontal: spacing.md, paddingVertical: spacing.md },
   row: { flexDirection: 'row', justifyContent: 'space-between' },
   rowLabel: { fontFamily: fonts.body, fontSize: 14, color: colors.textSecondary },
   rowValue: { fontFamily: fonts.bodyMedium, fontSize: 14, color: colors.text },

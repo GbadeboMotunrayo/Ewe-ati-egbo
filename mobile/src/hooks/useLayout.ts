@@ -1,5 +1,19 @@
 import { useWindowDimensions } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { breakpoints, spacing } from '@/theme/theme';
+
+/**
+ * The phone tab bar floats over content. Screens add `contentPad` to their scroll
+ * padding so the last row is never trapped behind the glass. Desktop uses a sidebar → small pad.
+ */
+export function useTabBarSpace() {
+  const { width } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
+  const barHeight = 64;
+  const bottomGap = Math.max(insets.bottom, 12);
+  const isDesktop = width >= breakpoints.desktop;
+  return { barHeight, bottomGap, contentPad: isDesktop ? spacing.xl : barHeight + bottomGap + spacing.lg };
+}
 
 /**
  * One source of truth for responsive layout. Screens ask "how much room do I have?"

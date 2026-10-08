@@ -1,51 +1,73 @@
 import React, { useEffect } from 'react';
-import { Platform } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Tabs } from 'expo-router';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { Home, Search, Package, User, type LucideIcon } from 'lucide-react-native';
-import { colors, fonts, motion, shadow } from '@/theme/theme';
-import { useLayout } from '@/hooks/useLayout';
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
-/** Tab icon that springs up a little when its tab becomes active. */
+const EASE_OUT = Easing.bezier(0.23, 1, 0.32, 1);
+import { Home, Search, Package, User, type LucideIcon } from 'lucide-react-native';
+import { colors, fonts, radius, shadow } from '@/theme/theme';
+import { useLayout, useTabBarSpace } from '@/hooks/useLayout';
+import { Glass } from '@/components/Glass';
+
+/**
+ * Active tab = a soft green capsule fading in behind the icon. Tab switches happen
+ * dozens of times a session, so this is a 150ms fade — no bounce, no slide.
+ */
 function TabIcon({ Icon, color, size, focused }: { Icon: LucideIcon; color: string; size: number; focused: boolean }) {
-  const s = useSharedValue(focused ? 1.12 : 1);
+  const on = useSharedValue(focused ? 1 : 0);
   useEffect(() => {
-    s.value = withSpring(focused ? 1.12 : 1, motion.pop);
-  }, [focused, s]);
-  const style = useAnimatedStyle(() => ({ transform: [{ scale: s.value }] }));
+    on.set(withTiming(focused ? 1 : 0, { duration: 150, easing: EASE_OUT }));
+  }, [focused, on]);
+  const pill = useAnimatedStyle(() => ({ opacity: on.get(), transform: [{ scale: 0.85 + 0.15 * on.get() }] }));
+
   return (
-    <Animated.View style={style}>
+    <View style={styles.iconWrap}>
+      <Animated.View style={[styles.activePill, pill]} />
       <Icon color={color} size={size} strokeWidth={focused ? 2.4 : 2} />
-    </Animated.View>
+    </View>
   );
 }
 
 export default function TabsLayout() {
   const { isDesktop } = useLayout();
+  const { barHeight, bottomGap } = useTabBarSpace();
 
   return (
     <Tabs
+      // The floating bar handles the home-indicator gap itself.
+      safeAreaInsets={isDesktop ? undefined : { bottom: 0 }}
       screenOptions={{
         headerShown: false,
-        // Desktop web: a left sidebar instead of a stretched bottom bar.
+        animation: 'none',
         tabBarPosition: isDesktop ? 'left' : 'bottom',
         tabBarVariant: isDesktop ? 'material' : 'uikit',
         tabBarLabelPosition: isDesktop ? 'beside-icon' : 'below-icon',
-        tabBarActiveTintColor: colors.primary,
+        tabBarActiveTintColor: colors.primaryDark,
         tabBarInactiveTintColor: colors.textSecondary,
-        tabBarActiveBackgroundColor: isDesktop ? colors.greenTint : undefined,
-        tabBarLabelStyle: { fontFamily: fonts.bodyMedium, fontSize: isDesktop ? 14 : 12 },
-        tabBarItemStyle: isDesktop ? { borderRadius: 12, marginHorizontal: 8, marginVertical: 2 } : undefined,
+        tabBarLabelStyle: { fontFamily: fonts.bodyMedium, fontSize: isDesktop ? 14 : 11, marginTop: isDesktop ? 0 : 2 },
+        tabBarItemStyle: isDesktop ? { borderRadius: 14, marginHorizontal: 10, marginVertical: 3 } : { paddingTop: 6 },
+        tabBarActiveBackgroundColor: isDesktop ? 'rgba(31,107,59,0.12)' : undefined,
+        tabBarBackground: () =>
+          isDesktop ? (
+            <Glass style={StyleSheet.absoluteFill} radius={0} sheen={false} />
+          ) : (
+            <Glass style={StyleSheet.absoluteFill} radius={radius.lg + 8} />
+          ),
         tabBarStyle: isDesktop
-          ? { backgroundColor: colors.surface, borderRightColor: colors.border, minWidth: 200, paddingTop: 24 }
+          ? { backgroundColor: 'transparent', borderRightWidth: 0, minWidth: 220, paddingTop: 28 }
           : {
-              backgroundColor: colors.surface,
-              borderTopColor: colors.border,
-              height: Platform.OS === 'web' ? 64 : undefined,
-              paddingTop: 6,
-              ...shadow.sm,
+              position: 'absolute',
+              left: 16,
+              right: 16,
+              bottom: bottomGap,
+              height: barHeight,
+              paddingBottom: 6,
+              borderRadius: radius.lg + 8,
+              borderTopWidth: 0,
+              backgroundColor: 'transparent',
+              ...shadow.lg,
             },
-        animation: 'shift',
+        sceneStyle: { backgroundColor: 'transparent' },
       }}
     >
       <Tabs.Screen name="index" options={{ title: 'Home', tabBarIcon: (p) => <TabIcon Icon={Home} {...p} /> }} />
@@ -55,3 +77,8 @@ export default function TabsLayout() {
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  iconWrap: { width: 52, height: 30, alignItems: 'center', justifyContent: 'center' },
+  activePill: { ...StyleSheet.absoluteFillObject, borderRadius: 15, backgroundColor: 'rgba(31,107,59,0.14)' },
+});

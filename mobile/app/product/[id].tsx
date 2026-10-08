@@ -12,7 +12,9 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import { ArrowLeft, Star, Flag, ShoppingBag, PackageSearch } from 'lucide-react-native';
-import { colors, fonts, motion, radius, shadow, spacing, productClass as pc } from '@/theme/theme';
+import { aurora, colors, fonts, motion, radius, shadow, spacing, productClass as pc } from '@/theme/theme';
+import { Backdrop } from '@/components/Backdrop';
+import { Glass, GlassFill } from '@/components/Glass';
 import { productById, quoteDelivery, sellerById } from '@/data/mockData';
 import { gbp } from '@/lib/format';
 import { Button } from '@/components/Button';
@@ -171,7 +173,8 @@ export default function ProductScreen() {
 
   return (
     <View style={styles.screen}>
-      <Animated.ScrollView onScroll={onScroll} scrollEventThrottle={16} contentContainerStyle={{ paddingBottom: L.isTablet ? spacing.xl * 2 : 140 }}>
+      <Backdrop />
+      <Animated.ScrollView onScroll={onScroll} scrollEventThrottle={16} contentContainerStyle={{ paddingBottom: L.isTablet ? spacing.xl * 2 : 150 + insets.bottom }}>
         {L.isTablet ? (
           // Tablet/desktop: photo left (sticky-feeling), details right.
           <View style={[styles.wide, { maxWidth: L.contentMaxWidth, paddingHorizontal: L.gutter, paddingTop: insets.top + 72 }]}>
@@ -194,6 +197,7 @@ export default function ProductScreen() {
 
       {/* Header: solid bar with title fades in once the hero scrolls away (always solid on wide screens). */}
       <Animated.View style={[styles.headerBg, { height: insets.top + 60 }, L.isTablet ? null : header]} pointerEvents="none">
+        <GlassFill radius={0} />
         <Text style={[styles.headerTitle, { marginTop: insets.top }]} numberOfLines={1}>{product.title}</Text>
       </Animated.View>
       <PressableScale
@@ -202,12 +206,15 @@ export default function ProductScreen() {
         accessibilityLabel="Go back"
         scaleTo={0.88}
       >
+        <GlassFill radius={21} />
         <ArrowLeft size={22} color={colors.text} />
       </PressableScale>
 
       {!L.isTablet && (
-        <View style={[styles.bar, { paddingBottom: insets.bottom + spacing.sm }]}>
-          {buyBox}
+        <View style={[styles.barShadow, { bottom: Math.max(insets.bottom, 12) }]}>
+          <Glass radius={radius.lg + 6} style={styles.bar}>
+            {buyBox}
+          </Glass>
         </View>
       )}
     </View>
@@ -224,22 +231,25 @@ function Block({ title, children }: { title: string; children: React.ReactNode }
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.background },
+  screen: { flex: 1, backgroundColor: aurora.base },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: spacing.lg, backgroundColor: colors.background, maxWidth: 420, width: '100%', alignSelf: 'center' },
   missingIcon: { width: 68, height: 68, borderRadius: 34, backgroundColor: colors.amberTint, alignItems: 'center', justifyContent: 'center', marginBottom: spacing.md },
   missingTitle: { fontFamily: fonts.heading, fontSize: 18, color: colors.text, textAlign: 'center' },
   missingBody: { fontFamily: fonts.body, fontSize: 14, color: colors.textSecondary, textAlign: 'center', marginTop: 4 },
   hero: { backgroundColor: colors.cream, overflow: 'hidden' },
-  sheet: { marginTop: -radius.lg, backgroundColor: colors.background, borderTopLeftRadius: radius.lg + 4, borderTopRightRadius: radius.lg + 4 },
+  // Translucent so it frosts over the photo where it overlaps, then lets the backdrop glow through.
+  sheet: {
+    marginTop: -radius.lg - 4, backgroundColor: 'rgba(246,242,233,0.88)', borderTopLeftRadius: radius.lg + 8, borderTopRightRadius: radius.lg + 8,
+    borderTopWidth: 1, borderColor: 'rgba(255,255,255,0.9)',
+  },
   wide: { flexDirection: 'row', gap: spacing.xl, width: '100%', alignSelf: 'center' },
   wideMedia: { flex: 1, maxWidth: 520 },
   wideImg: { width: '100%', aspectRatio: 1, borderRadius: radius.lg, backgroundColor: colors.cream },
   headerBg: {
-    position: 'absolute', top: 0, left: 0, right: 0, backgroundColor: 'rgba(255,255,255,0.97)', alignItems: 'center', justifyContent: 'center',
-    paddingHorizontal: 64, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border, ...shadow.sm,
+    position: 'absolute', top: 0, left: 0, right: 0, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 64, ...shadow.sm,
   },
   headerTitle: { fontFamily: fonts.headingMedium, fontSize: 15, color: colors.text },
-  back: { position: 'absolute', width: 42, height: 42, borderRadius: 21, backgroundColor: 'rgba(255,255,255,0.95)', alignItems: 'center', justifyContent: 'center', ...shadow.md },
+  back: { position: 'absolute', width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center', ...shadow.md },
   body: { padding: spacing.md, paddingTop: spacing.lg, gap: spacing.md },
   pillRow: { flexDirection: 'row', gap: spacing.sm, flexWrap: 'wrap' },
   title: { fontFamily: fonts.heading, fontSize: 22, lineHeight: 28, color: colors.text },
@@ -259,8 +269,7 @@ const styles = StyleSheet.create({
   report: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'center', paddingVertical: spacing.md, paddingHorizontal: spacing.md },
   reportText: { fontFamily: fonts.body, fontSize: 13, color: colors.textSecondary },
   buyBox: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
-  bar: {
-    position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: colors.surface,
-    borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.border, paddingHorizontal: spacing.md, paddingTop: spacing.sm + 2, ...shadow.lg,
-  },
+  // Floating frosted buy bar — lifts off the page instead of a flat white strip.
+  barShadow: { position: 'absolute', left: 12, right: 12, borderRadius: radius.lg + 6, ...shadow.lg },
+  bar: { paddingHorizontal: spacing.md, paddingVertical: spacing.sm + 2 },
 });
